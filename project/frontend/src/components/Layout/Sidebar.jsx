@@ -81,6 +81,11 @@ const Sidebar = () => {
                     <div className="pt-4 mt-4 border-t border-gray-800">
                         <div className="text-xs text-gray-500 px-3 mb-3 tracking-widest">NAT & PROXY SIMULATOR</div>
                         <NavItem to="/nat-forwarding" icon={Share2} label="NAT FORWARDING" onClick={() => setMobileOpen(false)} />
+                    </div>
+
+                    {/* Compliance & Security Section */}
+                    <div className="pt-4 mt-4 border-t border-gray-800">
+                        <div className="text-xs text-gray-500 px-3 mb-3 tracking-widest">COMPLIANCE & SECURITY</div>
                         <NavItem to="/compliance-check" icon={Lock} label="COMPLIANCE CHECK" onClick={() => setMobileOpen(false)} />
                     </div>
 
