@@ -7,6 +7,7 @@ import NetworkConfigPage from './pages/NetworkConfigPage';
 import AttackerConfigPage from './pages/AttackerConfigPage';
 import NATForwardingPage from './pages/NATForwardingPage';
 import ComplianceCheckPage from './pages/ComplianceCheckPage';
+import SubnetDesignerPage from './pages/SubnetDesignerPage';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/deauth-sim/attacker-config" element={<AttackerConfigPage />} />
           <Route path="/nat-forwarding" element={<NATForwardingPage />} />
           <Route path="/compliance-check" element={<ComplianceCheckPage />} />
+          <Route path="/subnet-designer" element={<SubnetDesignerPage />} />
         </Routes>
       </MainLayout>
     </Router>

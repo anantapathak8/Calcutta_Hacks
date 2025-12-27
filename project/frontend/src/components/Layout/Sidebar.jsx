@@ -83,6 +83,12 @@ const Sidebar = () => {
                         <NavItem to="/nat-forwarding" icon={Share2} label="NAT FORWARDING" onClick={() => setMobileOpen(false)} />
                         <NavItem to="/compliance-check" icon={Lock} label="COMPLIANCE CHECK" onClick={() => setMobileOpen(false)} />
                     </div>
+
+                    {/* Subnet Designer Section */}
+                    <div className="pt-4 mt-4 border-t border-gray-800">
+                        <div className="text-xs text-gray-500 px-3 mb-3 tracking-widest">NETWORK PLANNING</div>
+                        <NavItem to="/subnet-designer" icon={Share2} label="SUBNET DESIGNER" onClick={() => setMobileOpen(false)} />
+                    </div>
                 </nav>
 
                 <div className="mt-auto border-t border-gray-800 pt-6">

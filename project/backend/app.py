@@ -495,6 +495,156 @@ def parse_natural_language():
             'error': str(e)
         }), 500
 
+# ============ Subnet Designer APIs ============
+from set6.orchestrator import get_orchestrator
+from set6.models import SubnetDesignRequest, NaturalLanguageRequest
+
+@app.route('/api/subnet/design', methods=['POST'])
+def design_subnets():
+    """
+    Design subnets from structured JSON input.
+    
+    Request body:
+    {
+        "base_ip": "192.168.0.0",
+        "cidr": 16,
+        "growth_buffer": 0.3,
+        "enable_vlan_suggestions": true,
+        "branches": [
+            {
+                "name": "Engineering",
+                "hosts_needed": 300,
+                "description": "Engineering department"
+            }
+        ]
+    }
+    
+    Response: SubnetDesignResponse (see models.py)
+    """
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'Request body must be JSON'
+            }), 400
+        
+        # Validate and parse request
+        try:
+            subnet_request = SubnetDesignRequest(**data)
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': f'Invalid request format: {str(e)}'
+            }), 400
+        
+        # Get orchestrator and design subnets
+        orchestrator = get_orchestrator()
+        response = orchestrator.design_from_structured(subnet_request)
+        
+        # Convert to dict for JSON response
+        return jsonify(response.dict())
+    
+    except Exception as e:
+        logging.error(f"Error in subnet design: {str(e)}", exc_info=True)
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/subnet/design-nl', methods=['POST'])
+def design_subnets_nl():
+    """
+    Design subnets from natural language input.
+    
+    Request body:
+    {
+        "natural_language_input": "Design subnets for 10.0.0.0/16 with Finance (200 users), IT (100 devices), Guest WiFi"
+    }
+    
+    Response: SubnetDesignResponse (see models.py)
+    """
+    try:
+        data = request.get_json()
+        
+        if not data or 'natural_language_input' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'Missing natural_language_input field'
+            }), 400
+        
+        nl_input = data['natural_language_input'].strip()
+        
+        if not nl_input:
+            return jsonify({
+                'success': False,
+                'error': 'Natural language input cannot be empty'
+            }), 400
+        
+        # Get orchestrator and design subnets
+        orchestrator = get_orchestrator()
+        response = orchestrator.design_from_natural_language(nl_input)
+        
+        # Convert to dict for JSON response
+        return jsonify(response.dict())
+    
+    except Exception as e:
+        logging.error(f"Error in NL subnet design: {str(e)}", exc_info=True)
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/subnet/validate', methods=['POST'])
+def validate_subnet_design():
+    """
+    Validate a subnet design request without actually allocating.
+    
+    Returns validation result and estimated space requirements.
+    """
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'Request body must be JSON'
+            }), 400
+        
+        try:
+            subnet_request = SubnetDesignRequest(**data)
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'valid': False,
+                'error': f'Invalid request format: {str(e)}'
+            }), 400
+        
+        # Validate
+        from set6.subnet_engine import validate_subnet_request
+        is_valid, error_msg = validate_subnet_request(subnet_request)
+        
+        if is_valid:
+            return jsonify({
+                'success': True,
+                'valid': True,
+                'message': 'Subnet design is valid and can be allocated'
+            })
+        else:
+            return jsonify({
+                'success': True,
+                'valid': False,
+                'error': error_msg
+            })
+    
+    except Exception as e:
+        logging.error(f"Error in validation: {str(e)}", exc_info=True)
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 if __name__ == '__main__':
     import socket
     import sys

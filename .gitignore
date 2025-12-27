@@ -3,3 +3,7 @@ venv
 .venv
 env
 node_modules
+
+# Ignore documentation files - track only code
+*.md
+*.txt
