@@ -1,13 +1,69 @@
 import os
 from ai.ollama_client import get_ollama_client, get_model_name
 import json
+import re
 from utils.terminal_logger import log_event
+
+def parse_simple_command(user_input):
+    """
+    Parse simple commands that don't require AI processing.
+    Returns command dict if matched, None otherwise.
+    """
+    user_input = user_input.strip().lower()
+    
+    # Pattern: "open port 8080" or "start server 8080"
+    open_port_match = re.search(r'\b(?:open|start).*?(?:port|server)\s+(\d+)\b', user_input)
+    if open_port_match:
+        port = open_port_match.group(1)
+        return {
+            "command": f"START_SERVER {port}",
+            "risk_level": "LOW",
+            "explanation": f"Starting HTTP server on port {port}"
+        }
+    
+    # Pattern: "close port 9102" or "stop server 9102"
+    close_port_match = re.search(r'\b(?:close|stop).*?(?:port|server)\s+(\d+)\b', user_input)
+    if close_port_match:
+        port = close_port_match.group(1)
+        return {
+            "command": f"STOP_SERVER {port}",
+            "risk_level": "LOW",
+            "explanation": f"Stopping server on port {port}"
+        }
+    
+    # Pattern: "scan port 80"
+    scan_port_match = re.search(r'\bscan.*?port\s+(\d+)\b', user_input)
+    if scan_port_match:
+        port = scan_port_match.group(1)
+        return {
+            "command": f"nmap -p {port} 127.0.0.1",
+            "risk_level": "LOW",
+            "explanation": f"Scanning port {port} on localhost"
+        }
+    
+    # Pattern: "block ip 1.2.3.4"
+    block_ip_match = re.search(r'\bblock.*?ip\s+([\d.]+)\b', user_input)
+    if block_ip_match:
+        ip = block_ip_match.group(1)
+        return {
+            "command": f"iptables -A INPUT -s {ip} -j DROP",
+            "risk_level": "HIGH",
+            "explanation": f"Blocking IP {ip} via iptables"
+        }
+    
+    return None
 
 def process_chat_request(user_input):
     """
     Interprets user natural language input into a specific system command.
     Returns a dictionary with 'command', 'risk_level', and 'explanation'.
     """
+    # Fast path: Handle simple commands without AI
+    simple_command = parse_simple_command(user_input)
+    if simple_command:
+        return simple_command
+    
+    # Fall back to AI processing for complex requests
     client = get_ollama_client()
     if not client:
         return {

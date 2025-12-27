@@ -108,5 +108,26 @@ def execute_mitigation(action_plan):
         else:
             log_mcp_action(cmd, safe=False)
             results.append({"command": cmd, "status": "blocked", "reason": "Unsafe command"})
+    
+    # Add success message after all commands are processed
+    if results:
+        # Check if any command had issues
+        all_successful = all(
+            r.get("status") in ["executed", "simulated", "skipped"] 
+            for r in results
+        )
+        
+        if all_successful:
+            results.append({
+                "command": "COMPLETION_MESSAGE",
+                "status": "success",
+                "output": "✓ All commands executed successfully"
+            })
+        else:
+            results.append({
+                "command": "COMPLETION_MESSAGE", 
+                "status": "partial",
+                "output": "⚠ Some commands completed with warnings or errors"
+            })
             
     return results
