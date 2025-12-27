@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import RiskGauge from '../components/Dashboard/RiskGauge';
-import HardwareStatus from '../components/Dashboard/HardwareStatus';
 import ScanFeed from '../components/Dashboard/ScanFeed';
 import TerminalLog from '../components/Dashboard/TerminalLog';
 import DeauthDetection from '../components/DeauthDetection';
-import { Activity, Wifi, ShieldCheck, Zap, Shield, AlertTriangle } from 'lucide-react';
+import { Activity, Wifi, ShieldCheck, Shield, AlertTriangle } from 'lucide-react';
 
 const DashboardPage = () => {
     const [data, setData] = useState(null);
@@ -228,14 +227,7 @@ const DashboardPage = () => {
             </div>
 
             {/* MID ROW: FUL WIDTH CARDS */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* HARDWARE STATUS - Enhanced */}
-                <motion.div variants={itemVars} className="lg:col-span-1">
-                    <div className="h-full min-h-[350px]">
-                        <HardwareStatus />
-                    </div>
-                </motion.div>
-
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* DEAUTH DETECTION - Enhanced */}
                 <motion.div variants={itemVars} className="lg:col-span-1">
                     <div className="h-full min-h-[350px]">
