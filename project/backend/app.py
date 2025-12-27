@@ -367,6 +367,74 @@ def predict_nat_protocol():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ============ Compliance Check APIs ============
+import set5
+
+# Store compliance reports in memory
+compliance_reports = []
+
+@app.route('/api/compliance/check', methods=['POST'])
+def run_compliance_check():
+    """Run compliance check and return results"""
+    try:
+        # Run the compliance checks
+        result = set5.run_compliance_checks()
+        
+        # Store the report
+        compliance_reports.append(result)
+        
+        # Keep only last 50 reports to avoid memory issues
+        if len(compliance_reports) > 50:
+            compliance_reports.pop(0)
+        
+        return jsonify({
+            'success': True,
+            'report': result
+        })
+    except Exception as e:
+        logging.error(f"Error running compliance check: {str(e)}", exc_info=True)
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/compliance/latest', methods=['GET'])
+def get_latest_compliance():
+    """Get the latest compliance report"""
+    try:
+        if compliance_reports:
+            return jsonify({
+                'success': True,
+                'report': compliance_reports[-1]
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': 'No compliance reports available'
+            }), 404
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/compliance/reports', methods=['GET'])
+def get_all_compliance_reports():
+    """Get all compliance reports"""
+    try:
+        return jsonify({
+            'success': True,
+            'count': len(compliance_reports),
+            'reports': compliance_reports
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+# ============ NLP Parser API ============
+
 @app.route('/api/parse', methods=['POST'])
 def parse_natural_language():
     """

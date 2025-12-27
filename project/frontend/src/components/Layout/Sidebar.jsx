@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Shield, Share2, Bot, Terminal, Menu, X, Wifi, Target } from 'lucide-react';
+import { Shield, Share2, Bot, Terminal, Menu, X, Wifi, Target, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Sidebar = () => {
@@ -69,18 +69,19 @@ const Sidebar = () => {
                     <NavItem to="/" icon={Terminal} label="OPS DASHBOARD" onClick={() => setMobileOpen(false)} />
                     <NavItem to="/network" icon={Share2} label="NETWORK MAP" onClick={() => setMobileOpen(false)} />
                     <NavItem to="/ai-architect" icon={Bot} label="AI ARCHITECT" onClick={() => setMobileOpen(false)} />
-                    
+
                     {/* Deauth Simulator Section */}
                     <div className="pt-4 mt-4 border-t border-gray-800">
                         <div className="text-xs text-gray-500 px-3 mb-3 tracking-widest">DEAUTH SIMULATOR</div>
                         <NavItem to="/deauth-sim/net-config" icon={Wifi} label="NETWORK CONFIG" onClick={() => setMobileOpen(false)} />
                         <NavItem to="/deauth-sim/attacker-config" icon={Target} label="ATTACK CONFIG" onClick={() => setMobileOpen(false)} />
                     </div>
-                    
+
                     {/* NAT Forwarding Section */}
                     <div className="pt-4 mt-4 border-t border-gray-800">
                         <div className="text-xs text-gray-500 px-3 mb-3 tracking-widest">NAT & PROXY SIMULATOR</div>
                         <NavItem to="/nat-forwarding" icon={Share2} label="NAT FORWARDING" onClick={() => setMobileOpen(false)} />
+                        <NavItem to="/compliance-check" icon={Lock} label="COMPLIANCE CHECK" onClick={() => setMobileOpen(false)} />
                     </div>
                 </nav>
 

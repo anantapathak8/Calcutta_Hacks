@@ -286,6 +286,7 @@ const NATForwardingPage = () => {
         }
     };
 
+
     return (
         <div className="min-h-screen bg-gray-900 text-white p-6">
             <Modal
@@ -564,6 +565,7 @@ const NATForwardingPage = () => {
                         <li>• Access via: http://calcutta-hacks-server.uemcseaiml.org/[proxy_name]/</li>
                     </ul>
                 </div>
+
             </div>
         </div>
     );

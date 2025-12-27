@@ -1,5 +1,5 @@
 {
-  "timestamp": 1766854837.2235684,
+  "timestamp": 1766858097.4160929,
   "scans": {
     "ports": [
       {
@@ -43,12 +43,22 @@
         "state": "open"
       },
       {
+        "port": 9093,
+        "service": "copycat",
+        "state": "open"
+      },
+      {
         "port": 9101,
         "service": "jetdirect",
         "state": "open"
       },
       {
         "port": 9102,
+        "service": "jetdirect",
+        "state": "open"
+      },
+      {
+        "port": 9103,
         "service": "jetdirect",
         "state": "open"
       },
@@ -63,28 +73,23 @@
         "state": "open"
       },
       {
-        "port": 32897,
-        "service": "unknown",
-        "state": "open"
-      },
-      {
-        "port": 35009,
-        "service": "",
-        "state": "open"
-      },
-      {
-        "port": 35817,
+        "port": 34635,
         "service": "http",
         "state": "open"
       },
       {
-        "port": 36849,
-        "service": "http",
+        "port": 34981,
+        "service": "unknown",
         "state": "open"
       },
       {
-        "port": 37553,
+        "port": 35897,
         "service": "unknown",
+        "state": "open"
+      },
+      {
+        "port": 36417,
+        "service": "http",
         "state": "open"
       },
       {
@@ -98,17 +103,7 @@
         "state": "open"
       },
       {
-        "port": 41545,
-        "service": "http",
-        "state": "open"
-      },
-      {
-        "port": 42121,
-        "service": "http",
-        "state": "open"
-      },
-      {
-        "port": 45459,
+        "port": 42899,
         "service": "",
         "state": "open"
       }
@@ -126,9 +121,9 @@
       "details": "No duplicate MAC addresses found in ARP table."
     },
     "deauth_prediction": {
-      "status": "WARNING",
-      "details": "Unstable connection detected. Monitor for deauth packets.",
-      "probability": "Medium"
+      "status": "SAFE",
+      "details": "Wi-Fi connection appears stable.",
+      "probability": "Low"
     },
     "network_graph": {
       "nodes": [
@@ -190,7 +185,7 @@
     "message": "Hardware Security Key removed! Authenticated actions restricted.",
     "unlocked": false
   },
-  "risk_score": 72,
+  "risk_score": 70,
   "risk_level": "MEDIUM",
   "ai_explanation": "System Scan Complete. Moderate risks identified. ",
   "action_plan": [
@@ -198,252 +193,252 @@
   ],
   "logs": [
     {
-      "timestamp": "22:30:16",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 22 (ssh)"
-    },
-    {
-      "timestamp": "22:30:16",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 80 (http)"
-    },
-    {
-      "timestamp": "22:30:16",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 5001 (http)"
-    },
-    {
-      "timestamp": "22:30:16",
-      "type": "SCAN",
-      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
-    },
-    {
-      "timestamp": "22:30:16",
-      "type": "SCAN",
-      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
-    },
-    {
-      "timestamp": "22:30:16",
-      "type": "INFO",
-      "message": "[AI] Correlating findings and calculating risk..."
-    },
-    {
-      "timestamp": "22:30:16",
-      "type": "WARNING",
-      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
-    },
-    {
-      "timestamp": "22:30:17",
-      "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000020284}'"
-    },
-    {
-      "timestamp": "22:30:17",
-      "type": "WARNING",
-      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499458, Requested 1276. Please try again in 2m6.835199999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
-    },
-    {
-      "timestamp": "22:30:17",
-      "type": "ACTION",
-      "message": "[MCP] Executing 1 mitigation actions..."
-    },
-    {
-      "timestamp": "22:30:17",
-      "type": "ACTION",
-      "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
-    },
-    {
-      "timestamp": "22:30:17",
+      "timestamp": "23:24:19",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "22:30:17",
+      "timestamp": "23:24:19",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:33",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:33",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 80 (http)"
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:33",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:33",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:33",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:33",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:33",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:34",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000022709}'"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.00004681}'"
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:35",
       "type": "WARNING",
-      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499444, Requested 1276. Please try again in 2m4.416s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499448, Requested 1254. Please try again in 2m1.3056s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:35",
       "type": "ACTION",
       "message": "[MCP] Executing 1 mitigation actions..."
     },
     {
-      "timestamp": "22:30:19",
+      "timestamp": "23:24:35",
       "type": "ACTION",
       "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
     },
     {
-      "timestamp": "22:30:20",
-      "type": "SCAN",
-      "message": "[SYSTEM] Starting FAST scan cycle..."
-    },
-    {
-      "timestamp": "22:30:20",
-      "type": "SCAN",
-      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
-    },
-    {
-      "timestamp": "22:30:34",
+      "timestamp": "23:24:36",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "22:30:34",
+      "timestamp": "23:24:36",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 80 (http)"
     },
     {
-      "timestamp": "22:30:34",
+      "timestamp": "23:24:36",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "22:30:34",
+      "timestamp": "23:24:36",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "22:30:34",
+      "timestamp": "23:24:36",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "22:30:34",
+      "timestamp": "23:24:36",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "22:30:34",
+      "timestamp": "23:24:36",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "22:30:35",
+      "timestamp": "23:24:36",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000025003}'"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000025078}'"
     },
     {
-      "timestamp": "22:30:35",
+      "timestamp": "23:24:37",
       "type": "WARNING",
-      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499353, Requested 1276. Please try again in 1m48.6912s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499435, Requested 1259. Please try again in 1m59.9232s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
     },
     {
-      "timestamp": "22:30:35",
+      "timestamp": "23:24:37",
       "type": "ACTION",
       "message": "[MCP] Executing 1 mitigation actions..."
     },
     {
-      "timestamp": "22:30:35",
+      "timestamp": "23:24:37",
       "type": "ACTION",
       "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
     },
     {
-      "timestamp": "22:30:35",
+      "timestamp": "23:24:37",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "22:30:35",
+      "timestamp": "23:24:37",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:40",
+      "type": "SCAN",
+      "message": "[SYSTEM] Starting FAST scan cycle..."
+    },
+    {
+      "timestamp": "23:24:40",
+      "type": "SCAN",
+      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
+    },
+    {
+      "timestamp": "23:24:54",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:54",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 80 (http)"
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:54",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:54",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:54",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:54",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:54",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "22:30:37",
+      "timestamp": "23:24:55",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000026581}'"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000024446}'"
     },
     {
-      "timestamp": "22:30:38",
+      "timestamp": "23:24:56",
       "type": "WARNING",
-      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499339, Requested 1281. Please try again in 1m47.136s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499327, Requested 1254. Please try again in 1m40.3968s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
     },
     {
-      "timestamp": "22:30:38",
+      "timestamp": "23:24:56",
       "type": "ACTION",
       "message": "[MCP] Executing 1 mitigation actions..."
     },
     {
-      "timestamp": "22:30:38",
+      "timestamp": "23:24:56",
+      "type": "ACTION",
+      "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
+    },
+    {
+      "timestamp": "23:24:57",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 22 (ssh)"
+    },
+    {
+      "timestamp": "23:24:57",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 80 (http)"
+    },
+    {
+      "timestamp": "23:24:57",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 5001 (http)"
+    },
+    {
+      "timestamp": "23:24:57",
+      "type": "SCAN",
+      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
+    },
+    {
+      "timestamp": "23:24:57",
+      "type": "SCAN",
+      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
+    },
+    {
+      "timestamp": "23:24:57",
+      "type": "INFO",
+      "message": "[AI] Correlating findings and calculating risk..."
+    },
+    {
+      "timestamp": "23:24:57",
+      "type": "WARNING",
+      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
+    },
+    {
+      "timestamp": "23:24:58",
+      "type": "WARNING",
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000022775}'"
+    },
+    {
+      "timestamp": "23:24:58",
+      "type": "WARNING",
+      "message": "[AI] Groq Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kd5qgg69ey2sc09nfeb25mjc` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 499313, Requested 1254. Please try again in 1m37.9776s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    },
+    {
+      "timestamp": "23:24:58",
+      "type": "ACTION",
+      "message": "[MCP] Executing 1 mitigation actions..."
+    },
+    {
+      "timestamp": "23:24:58",
       "type": "ACTION",
       "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
     }
