@@ -93,6 +93,7 @@ const Sidebar = () => {
                     <div className="pt-4 mt-4 border-t border-gray-800">
                         <div className="text-xs text-gray-500 px-3 mb-3 tracking-widest">NETWORK PLANNING</div>
                         <NavItem to="/subnet-designer" icon={Share2} label="SUBNET DESIGNER" onClick={() => setMobileOpen(false)} />
+                        <NavItem to="/hotspot-generator" icon={Wifi} label="HOTSPOT GENERATOR" onClick={() => setMobileOpen(false)} />
                     </div>
                 </nav>
 

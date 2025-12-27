@@ -8,6 +8,7 @@ import AttackerConfigPage from './pages/AttackerConfigPage';
 import NATForwardingPage from './pages/NATForwardingPage';
 import ComplianceCheckPage from './pages/ComplianceCheckPage';
 import SubnetDesignerPage from './pages/SubnetDesignerPage';
+import HotspotGeneratorPage from './pages/HotspotGeneratorPage';
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/nat-forwarding" element={<NATForwardingPage />} />
           <Route path="/compliance-check" element={<ComplianceCheckPage />} />
           <Route path="/subnet-designer" element={<SubnetDesignerPage />} />
+          <Route path="/hotspot-generator" element={<HotspotGeneratorPage />} />
         </Routes>
       </MainLayout>
     </Router>

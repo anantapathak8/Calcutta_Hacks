@@ -10,6 +10,7 @@ class SecurityKnowledgeBase:
         self.qdrant_url = os.getenv("QDRANT_URL")
         self.qdrant_key = os.getenv("QDRANT_API_KEY")
         self.collection_name = "sentinel_security_rules"
+        self.model = None  # Lazy load the model
         
         if not self.qdrant_url or not self.qdrant_key:
             log_event("RAG", "Qdrant credentials missing. RAG disabled.", "WARNING")
@@ -18,13 +19,21 @@ class SecurityKnowledgeBase:
 
         try:
             self.client = QdrantClient(url=self.qdrant_url, api_key=self.qdrant_key)
-            # Initialize model lazily or here. For persistent server processes, here is fine.
-            # Using a small, fast model for CPU inference
-            log_event("RAG", "Loading embedding model (all-MiniLM-L6-v2)...", "INFO")
-            self.model = SentenceTransformer('all-MiniLM-L6-v2') 
+            log_event("RAG", "RAG initialized (model will load on first use)", "INFO")
         except Exception as e:
             log_event("RAG", f"Failed to init RAG: {e}", "CRITICAL")
             self.client = None
+    
+    def _ensure_model_loaded(self):
+        """Lazy load the embedding model on first use"""
+        if self.model is None:
+            try:
+                log_event("RAG", "Loading embedding model (all-MiniLM-L6-v2)...", "INFO")
+                self.model = SentenceTransformer('all-MiniLM-L6-v2')
+                log_event("RAG", "Embedding model loaded successfully", "INFO")
+            except Exception as e:
+                log_event("RAG", f"Failed to load embedding model: {e}", "CRITICAL")
+                raise
 
     def initialize_collection(self):
         if not self.client: return
@@ -43,6 +52,9 @@ class SecurityKnowledgeBase:
         documents: list of dicts {'text': '...', 'metadata': {...}}
         """
         if not self.client: return
+        
+        # Ensure model is loaded
+        self._ensure_model_loaded()
 
         points = []
         log_event("RAG", f"Embedding {len(documents)} documents...", "INFO")
@@ -71,6 +83,9 @@ class SecurityKnowledgeBase:
 
     def search(self, query, limit=3):
         if not self.client: return []
+        
+        # Ensure model is loaded
+        self._ensure_model_loaded()
         
         try:
             vector = self.model.encode(query).tolist()

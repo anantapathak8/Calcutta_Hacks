@@ -49,6 +49,11 @@ from set1 import deauth_simulator
 from set1.nat_proxy.protocol_predictor import predict_protocol
 from set1.nat_proxy import nat_forwarding
 
+# Register set7 routes (NLP Hotspot Generator)
+from set7.api_routes import set7_bp
+app.register_blueprint(set7_bp)
+
+
 # Chatbot NLP Parser
 from Chatbot.nlp_parser import IntelligentNetworkParser
 import logging

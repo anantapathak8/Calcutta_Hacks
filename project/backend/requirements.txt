@@ -17,3 +17,4 @@ torch
 tensorflow
 scikit-learn
 numpy
+groq
