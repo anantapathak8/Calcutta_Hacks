@@ -1,0 +1,43 @@
+1) Construct a plan on paper based on feedbacks
+2) Develop the UI for PoC
+3) Add / remove the said info / params from dashboard
+
+----- Deauth -----
+4) Setup virtual network based on provided config
+5) Add auto populate based on given randomizer
+6) Train AI model to detect de-auth level / safety level
+7) Implement manual testing for verification
+----------
+
+---- NAT forwarding control ------
+8) Open ports (8000-8010) on multiple services
+9) Setup cloudflare tunnel
+10) Setup nginx reverse proxy for http 80
+11) Talk with system shell using python (create the service)
+12) Create a get route as an example server to test reverse proxy
+13) create systemd service to start it on boot
+14) Implement reverse proxy config (provided by judge / mentor) - create and delete
+15) Make external / virtual port optional
+16) Create AI to classify protocol - TCP / UDP / BOTH.
+17) Figure out the parameters to control the filtering using AI.
+18) Implement the AI filtering based on selected parameters.
+------------
+
+---- Compilance testing USB ----
+19) Implement keyboard serial on the compilance tester hardware
+20) Define the compliance criteria / parameters
+21) Create systemd service to regulate / monitor compilance
+22) Invoke the trigger using usb serial with a secret key
+23) Make one touch installation for systemd service
+24) Create a database server and a POST endpoint to store compliance report and invoke it upon completion
+--------
+
+----- Manage network config -----
+25) Create virtual AP (config is already given by judges)
+26) AI will detect network config and suggest improvements
+27) Enforce changes (if allowed)
+
+--- network map attack probability tester ---
+28) find a way to build the network map
+29) develop the algorithm to check for safety score and identify the potential risk
+-------

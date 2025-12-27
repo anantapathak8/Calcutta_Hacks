@@ -1,0 +1,82 @@
+okay I am using kali linux. now in the set 1 I need a a NAT forwarding feature. Now this is going to be interesting. It will be combination of both AI and shell. basically I have setup a small express server at port 9000 and i have setup reverse proxy using nginx. 
+so this NAT management page, Gateway address will be pre-filled (the router address), now its upto the user how many ports user wants to forward (row + - button) each row will ask internal IP address (it will be auto populated with the ip of my device assinged by the router and it is editable, this will actually never be used but we need to show), virtual port number (this data will not be used but we need to show for judgement in the hackathon), internal port number, reverse proxy name, and protocol (tcp / udp / both) - the uesr may select the particular protocol if user is sure or may type the requirement in natural langauge (eg. - video chat, file server etc.) and the ai will suggest the protocol (for example for video streaming udp, for dns it uses both, for ftp it uses tcp, you prepare some of these kind of dataset like http uses tcp, pptp uses both, sock uses tcp,telnet uses both etc). It should not be rule based, it should be ai predict, upon clicking predict button, it will select the drop down accordingly. its also of no use but we need to show. Now its time for the nginx config.
+
+I am not sure whether its possible for you to congif the nginx or interact with shell using python directly or may be u could ssh into the same laptop using localhost (choose the option that is best, i am leaving the decision on you.)
+
+Suppose in a row user gives internal IP as 9000 and reverse proxy name as route0 and in another row internal ip 9001 and proxy name route1 then
+
+then nginx configuration should be
+
+server {
+    listen 80;
+    server_name calcutta-hacks-server.uemcseaiml.org;
+
+    # Proxy requests to 127.0.0.1:9000
+    location /route0/ {
+        rewrite ^/route0(/.*)$ $1 break;
+        proxy_pass http://127.0.0.1:9000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Proxy requests to 127.0.0.1:9001
+    location /route1/ {
+        rewrite ^/route1(/.*)$ $1 break;
+        proxy_pass http://127.0.0.1:9001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+so the location block is repeated and nested inside the server block for each of the rows user gives in the frontend
+
+i dont know you will do it using ssh or direct python
+
+for your reference let me give you how I do it in my system using terminal
+
+i open the nginx config file with
+sudo vim /etc/nginx/sites-enabled/calcutta-hacks
+
+then I write the configuration, and save. then I do
+sudo systemctl reload nginx in order to make it into effect.
+
+in the frontend there should be delete for every row. suppose if user does it for the row with internal port 9001
+
+it will remove the particular block
+# Proxy requests to 127.0.0.1:9001
+    location /route1/ {
+        rewrite ^/route1(/.*)$ $1 break;
+        proxy_pass http://127.0.0.1:9001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+
+after every change the reload should be done
+
+if user removes everything it will keep the file as
+
+server {
+    listen 80;
+    server_name calcutta-hacks-server.uemcseaiml.org;
+}
+
+and then reload
+
+one info might help you that i dont require to put sudo password everytime as I have edited the visudo and added the line
+
+asif ALL=(ALL) NOPASSWD: ALL
+
+asif is my username
+
+and the sudo password is Asif@78690$$
+
+you might need it if you use ssh on local system
+but I leave the decision on you
+
+on my local I do ssh using
+
+ssh localhost, then it asks for the password

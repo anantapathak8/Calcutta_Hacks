@@ -1,0 +1,19 @@
+flask
+apscheduler
+psutil
+scapy
+python-nmap
+requests
+python-dotenv
+termcolor
+waitress
+flask-cors
+groq
+qdrant-client
+sentence-transformers
+nltk
+# Note: For CPU-only torch, run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch
+tensorflow
+scikit-learn
+numpy
