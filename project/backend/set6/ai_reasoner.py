@@ -1,5 +1,5 @@
 """
-AI Reasoning Layer using Groq API for intelligent subnet design.
+AI Reasoning Layer using Local LLaMA via Ollama for intelligent subnet design.
 
 This module handles:
 - Natural language parsing
@@ -15,30 +15,32 @@ import os
 import json
 import logging
 from typing import List, Dict, Tuple, Optional
-from groq import Groq
+import sys
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ai.ollama_client import get_ollama_client, get_model_name
 from .models import BranchRequirement, SubnetDesignRequest, NaturalLanguageRequest
 
 logger = logging.getLogger(__name__)
 
 
 class SubnetAIReasoner:
-    """AI reasoning layer for subnet design using Groq API"""
+    """AI reasoning layer for subnet design using Local LLaMA via Ollama"""
     
     def __init__(self, api_key: Optional[str] = None):
         """
-        Initialize AI reasoner with Groq API.
+        Initialize AI reasoner with Ollama.
         
         Args:
-            api_key: Groq API key (defaults to GROQ_API_KEY env var)
+            api_key: Ignored (kept for backward compatibility)
         """
-        self.api_key = api_key or os.getenv('GROQ_API_KEY')
-        if not self.api_key:
-            raise ValueError("Groq API key not provided. Set GROQ_API_KEY environment variable.")
+        self.client = get_ollama_client()
+        if not self.client:
+            raise ValueError("Ollama client not available. Make sure Ollama is running.")
         
-        self.client = Groq(api_key=self.api_key)
-        self.model = "llama-3.3-70b-versatile"  # Fast, capable model
+        self.model = get_model_name()
         
-        logger.info(f"AI Reasoner initialized with Groq model: {self.model}")
+        logger.info(f"AI Reasoner initialized with Ollama model: {self.model}")
     
     def parse_natural_language(self, nl_input: str) -> SubnetDesignRequest:
         """

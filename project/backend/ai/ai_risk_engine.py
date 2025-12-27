@@ -1,6 +1,6 @@
 import os
 import json
-from groq import Groq
+from ai.ollama_client import get_ollama_client, get_model_name
 from ai.rag_store import rag_engine
 from utils.terminal_logger import log_event
 
@@ -49,16 +49,14 @@ def calculate_risk_score(findings):
 
 def generate_ai_explanation(findings, risk_score):
     """
-    Uses Groq API with RAG context if available.
+    Uses Local LLaMA via Ollama with RAG context if available.
     """
-    api_key = os.getenv("GROQ_API_KEY")
     client = None
     
-    if api_key:
-        try:
-            client = Groq(api_key=api_key)
-        except Exception as e:
-             log_event("AI", f"Failed to init Groq client: {e}", "WARNING")
+    try:
+        client = get_ollama_client()
+    except Exception as e:
+        log_event("AI", f"Failed to init Ollama client: {e}", "WARNING")
 
     # Construct the query for RAG
     # We want context based on the specific threats found
@@ -104,7 +102,7 @@ def generate_ai_explanation(findings, risk_score):
             """
             
             completion = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
+                model=get_model_name(),
                 messages=[
                     {"role": "system", "content": "You are a helpful cybersecurity assistant."},
                     {"role": "user", "content": prompt}
@@ -114,7 +112,7 @@ def generate_ai_explanation(findings, risk_score):
             )
             return completion.choices[0].message.content
         except Exception as e:
-            log_event("AI", f"Groq Generation failed: {e}", "WARNING")
+            log_event("AI", f"Ollama Generation failed: {e}", "WARNING")
 
     # Fallback Logic (Template Based)
     explanation = "System Scan Complete. "

@@ -1,11 +1,14 @@
 """
-NLP Processor using Groq API for intent detection and entity extraction
+NLP Processor using Local LLaMA via Ollama for intent detection and entity extraction
 """
 import json
 import re
 from typing import Dict, Any, Optional
-from groq import Groq
-from .config import GROQ_API_KEY, GROQ_MODEL, GROQ_TEMPERATURE
+import sys
+import os
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ai.ollama_client import get_ollama_client, get_model_name
 
 
 class NLPProcessor:
@@ -14,13 +17,13 @@ class NLPProcessor:
     """
     
     def __init__(self, api_key: Optional[str] = None):
-        """Initialize Groq client"""
-        self.api_key = api_key or GROQ_API_KEY
-        if not self.api_key:
-            raise ValueError("Groq API key not provided. Set GROQ_API_KEY environment variable.")
+        """Initialize Ollama client"""
+        self.client = get_ollama_client()
+        if not self.client:
+            raise ValueError("Ollama client not available. Make sure Ollama is running.")
         
-        self.client = Groq(api_key=self.api_key)
-        self.model = GROQ_MODEL
+        self.model = get_model_name()
+        self.temperature = 0.1  # Low temperature for consistent entity extraction
         
     def _build_system_prompt(self) -> str:
         """Build the system prompt for Groq API"""
@@ -72,14 +75,14 @@ Be strict with JSON format. No markdown, no code blocks, just raw JSON."""
             Dictionary containing intent, entities, confidence, and missing parameters
         """
         try:
-            # Call Groq API
+            # Call Ollama API
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
                     {"role": "system", "content": self._build_system_prompt()},
                     {"role": "user", "content": command}
                 ],
-                temperature=GROQ_TEMPERATURE,
+                temperature=self.temperature,
                 max_tokens=500
             )
             
@@ -96,7 +99,7 @@ Be strict with JSON format. No markdown, no code blocks, just raw JSON."""
             # Validate response structure
             required_keys = ["intent", "entities", "confidence", "missing"]
             if not all(key in result for key in required_keys):
-                raise ValueError("Invalid response structure from Groq API")
+                raise ValueError("Invalid response structure from Ollama API")
             
             # Normalize security type (case-insensitive)
             if "security" in result["entities"] and result["entities"]["security"]:
@@ -189,7 +192,7 @@ Be strict with JSON format. No markdown, no code blocks, just raw JSON."""
             "entities": entities,
             "confidence": 0.5 if entities else 0.1,  # Low confidence for fallback
             "missing": missing,
-            "error": f"Fallback parsing used. Groq API error: {error}" if error else "Fallback parsing used"
+            "error": f"Fallback parsing used. Ollama API error: {error}" if error else "Fallback parsing used"
         }
     
     def generate_clarification_request(self, missing: list) -> str:

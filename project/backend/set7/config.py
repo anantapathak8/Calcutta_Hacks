@@ -1,12 +1,12 @@
 """
-Configuration settings for NLP-based Wi-Fi Hotspot Generator
+Configuration for SET-7 Hotspot NLP Generator
 """
 import os
 
-# Groq API Configuration
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL = "llama-3.3-70b-versatile"  # Updated from deprecated mixtral-8x7b-32768
-GROQ_TEMPERATURE = 0.1  # Low temperature for consistent entity extraction
+# Ollama Configuration (Local LLaMA)
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2:latest")
+OLLAMA_TEMPERATURE = 0.1  # Low temperature for consistent entity extraction
 
 # Network Configuration Constraints
 SUPPORTED_SECURITY = ["WPA2", "WPA3", "Open"]

@@ -73,7 +73,7 @@ def parse_command():
         # Check if NLP processor is available
         if not nlp_processor:
             return jsonify({
-                "error": "NLP processor not initialized. Please set GROQ_API_KEY environment variable."
+                "error": "NLP processor not initialized. Please make sure Ollama is running."
             }), 500
         
         # Parse command using NLP

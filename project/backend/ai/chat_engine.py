@@ -1,5 +1,5 @@
 import os
-from groq import Groq
+from ai.ollama_client import get_ollama_client, get_model_name
 import json
 from utils.terminal_logger import log_event
 
@@ -8,14 +8,12 @@ def process_chat_request(user_input):
     Interprets user natural language input into a specific system command.
     Returns a dictionary with 'command', 'risk_level', and 'explanation'.
     """
-    api_key = os.getenv("GROQ_API_KEY")
-    if not api_key:
+    client = get_ollama_client()
+    if not client:
         return {
-            "error": "GROQ_API_KEY not found",
+            "error": "Ollama not available",
             "message": "AI configuration error. Please check server logs."
         }
-
-    client = Groq(api_key=api_key)
     
     system_prompt = """
     You are a Linux System Administrator AI Helper for SentinelAI.
@@ -51,7 +49,7 @@ def process_chat_request(user_input):
 
     try:
         completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model=get_model_name(),
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_input}
