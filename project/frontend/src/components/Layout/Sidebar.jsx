@@ -67,7 +67,6 @@ const Sidebar = () => {
 
                 <nav className="flex-1 space-y-4">
                     <NavItem to="/" icon={Terminal} label="OPS DASHBOARD" onClick={() => setMobileOpen(false)} />
-                    <NavItem to="/network" icon={Share2} label="NETWORK MAP" onClick={() => setMobileOpen(false)} />
                     <NavItem to="/ai-architect" icon={Bot} label="AI ARCHITECT" onClick={() => setMobileOpen(false)} />
 
                     {/* Deauth Simulator Section */}
