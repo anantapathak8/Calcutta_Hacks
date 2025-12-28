@@ -1,5 +1,5 @@
 {
-  "timestamp": 1766885302.0471609,
+  "timestamp": 1766893982.3375432,
   "scans": {
     "ports": [
       {
@@ -45,6 +45,11 @@
       {
         "port": 9102,
         "service": "jetdirect",
+        "state": "open"
+      },
+      {
+        "port": 9222,
+        "service": "teamcoherence",
         "state": "open"
       },
       {
@@ -96,9 +101,9 @@
       "details": "No duplicate MAC addresses found in ARP table."
     },
     "deauth_prediction": {
-      "status": "SAFE",
-      "details": "Wi-Fi connection appears stable.",
-      "probability": "Low"
+      "status": "WARNING",
+      "details": "Unstable connection detected. Monitor for deauth packets.",
+      "probability": "Medium"
     },
     "network_graph": {
       "nodes": [
@@ -160,7 +165,7 @@
     "message": "Hardware Security Key removed! Authenticated actions restricted.",
     "unlocked": false
   },
-  "risk_score": 60,
+  "risk_score": 62,
   "risk_level": "MEDIUM",
   "ai_explanation": "System Scan Complete. Moderate risks identified. ",
   "action_plan": [
@@ -168,252 +173,252 @@
   ],
   "logs": [
     {
-      "timestamp": "06:57:58",
-      "type": "SCAN",
-      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
-    },
-    {
-      "timestamp": "06:57:58",
-      "type": "INFO",
-      "message": "[AI] Correlating findings and calculating risk..."
-    },
-    {
-      "timestamp": "06:57:58",
+      "timestamp": "09:22:59",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "06:57:58",
+      "timestamp": "09:22:59",
       "type": "INFO",
       "message": "[AI] Ollama client initialized (Model: llama3.2:latest)"
     },
     {
-      "timestamp": "06:57:58",
+      "timestamp": "09:23:00",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000023012}'"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000025912}'"
     },
     {
-      "timestamp": "06:58:00",
+      "timestamp": "09:23:02",
       "type": "WARNING",
       "message": "[AI] Ollama Generation failed: Connection error."
     },
     {
-      "timestamp": "06:58:00",
+      "timestamp": "09:23:02",
       "type": "ACTION",
       "message": "[MCP] Executing 1 mitigation actions..."
     },
     {
-      "timestamp": "06:58:00",
+      "timestamp": "09:23:02",
       "type": "ACTION",
       "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 80 (http)"
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "INFO",
       "message": "[AI] Ollama client initialized (Model: llama3.2:latest)"
     },
     {
-      "timestamp": "06:58:01",
+      "timestamp": "09:23:02",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000026738}'"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.00001836}'"
     },
     {
-      "timestamp": "06:58:02",
+      "timestamp": "09:23:03",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "06:58:02",
+      "timestamp": "09:23:03",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "06:58:02",
+      "timestamp": "09:23:04",
       "type": "WARNING",
       "message": "[AI] Ollama Generation failed: Connection error."
     },
     {
-      "timestamp": "06:58:02",
+      "timestamp": "09:23:04",
       "type": "ACTION",
       "message": "[MCP] Executing 1 mitigation actions..."
     },
     {
-      "timestamp": "06:58:02",
+      "timestamp": "09:23:04",
       "type": "ACTION",
       "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
     },
     {
-      "timestamp": "06:58:05",
-      "type": "SCAN",
-      "message": "[SYSTEM] Starting FAST scan cycle..."
-    },
-    {
-      "timestamp": "06:58:05",
-      "type": "SCAN",
-      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
-    },
-    {
-      "timestamp": "06:58:19",
+      "timestamp": "09:23:04",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "06:58:19",
+      "timestamp": "09:23:04",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 80 (http)"
     },
     {
-      "timestamp": "06:58:19",
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 1716 (tcpwrapped)"
+    },
+    {
+      "timestamp": "09:23:04",
       "type": "WARNING",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "06:58:19",
-      "type": "SCAN",
-      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 9000 (http)"
     },
     {
-      "timestamp": "06:58:19",
-      "type": "SCAN",
-      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 9090 (zeus-admin)"
     },
     {
-      "timestamp": "06:58:19",
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 9092 (XmlIpcRegSvc)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 9101 (jetdirect)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 9102 (jetdirect)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 9222 (teamcoherence)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 20241 (http)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 39811 ()"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 40101 (http)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 41111 (fs-qos)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 43097 (unknown)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 45307 (unknown)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "WARNING",
+      "message": "[SCAN] Found open port: 45619 (http)"
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "SCAN",
+      "message": "[SCAN] Checking Wi-Fi encryption standards..."
+    },
+    {
+      "timestamp": "09:23:04",
+      "type": "SCAN",
+      "message": "[SCAN] Checking router security for gateway: 10.115.21.81"
+    },
+    {
+      "timestamp": "09:23:05",
+      "type": "SCAN",
+      "message": "[SET2] Starting Device Discovery (Network Graph)..."
+    },
+    {
+      "timestamp": "09:23:05",
+      "type": "WARNING",
+      "message": "[SET2] Device Discovery failed/skipped ([Errno 1] Operation not permitted). Using Simulation Mode."
+    },
+    {
+      "timestamp": "09:23:05",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "06:58:19",
+      "timestamp": "09:23:05",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "06:58:19",
+      "timestamp": "09:23:05",
       "type": "INFO",
       "message": "[AI] Ollama client initialized (Model: llama3.2:latest)"
     },
     {
-      "timestamp": "06:58:22",
+      "timestamp": "09:23:06",
       "type": "WARNING",
-      "message": "[SCAN] Found open port: 22 (ssh)"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000023912}'"
     },
     {
-      "timestamp": "06:58:22",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 80 (http)"
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 5001 (http)"
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "SCAN",
-      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "SCAN",
-      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "INFO",
-      "message": "[AI] Correlating findings and calculating risk..."
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "WARNING",
-      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "INFO",
-      "message": "[AI] Ollama client initialized (Model: llama3.2:latest)"
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000027062}'"
-    },
-    {
-      "timestamp": "06:58:22",
-      "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000021883}'"
-    },
-    {
-      "timestamp": "06:58:23",
-      "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Connection error."
-    },
-    {
-      "timestamp": "06:58:23",
-      "type": "ACTION",
-      "message": "[MCP] Executing 1 mitigation actions..."
-    },
-    {
-      "timestamp": "06:58:23",
-      "type": "ACTION",
-      "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
-    },
-    {
-      "timestamp": "06:58:23",
+      "timestamp": "09:23:06",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "06:58:23",
+      "timestamp": "09:23:06",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "06:58:23",
+      "timestamp": "09:23:07",
       "type": "WARNING",
       "message": "[AI] Ollama Generation failed: Connection error."
     },
     {
-      "timestamp": "06:58:23",
+      "timestamp": "09:23:07",
       "type": "ACTION",
       "message": "[MCP] Executing 1 mitigation actions..."
     },
     {
-      "timestamp": "06:58:23",
+      "timestamp": "09:23:07",
       "type": "ACTION",
       "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
     }

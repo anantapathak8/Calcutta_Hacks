@@ -1,14 +1,11 @@
 """
-NLP Processor using Local LLaMA via Ollama for intent detection and entity extraction
+NLP Processor using Groq API for intent detection and entity extraction
 """
 import json
 import re
-from typing import Dict, Any, Optional
-import sys
 import os
-# Add parent directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from ai.ollama_client import get_ollama_client, get_model_name
+from typing import Dict, Any, Optional
+from groq import Groq
 
 
 class NLPProcessor:
@@ -17,12 +14,13 @@ class NLPProcessor:
     """
     
     def __init__(self, api_key: Optional[str] = None):
-        """Initialize Ollama client"""
-        self.client = get_ollama_client()
-        if not self.client:
-            raise ValueError("Ollama client not available. Make sure Ollama is running.")
+        """Initialize Groq client"""
+        self.api_key = api_key or os.getenv("GROQ_API_KEY")
+        if not self.api_key:
+            raise ValueError("Groq API key not available. Set GROQ_API_KEY environment variable.")
         
-        self.model = get_model_name()
+        self.client = Groq(api_key=self.api_key)
+        self.model = "llama-3.1-8b-instant"
         self.temperature = 0.1  # Low temperature for consistent entity extraction
         
     def _build_system_prompt(self) -> str:
@@ -99,7 +97,7 @@ Be strict with JSON format. No markdown, no code blocks, just raw JSON."""
             # Validate response structure
             required_keys = ["intent", "entities", "confidence", "missing"]
             if not all(key in result for key in required_keys):
-                raise ValueError("Invalid response structure from Ollama API")
+                raise ValueError("Invalid response structure from Groq API")
             
             # Normalize security type (case-insensitive)
             if "security" in result["entities"] and result["entities"]["security"]:
@@ -192,7 +190,7 @@ Be strict with JSON format. No markdown, no code blocks, just raw JSON."""
             "entities": entities,
             "confidence": 0.5 if entities else 0.1,  # Low confidence for fallback
             "missing": missing,
-            "error": f"Fallback parsing used. Ollama API error: {error}" if error else "Fallback parsing used"
+            "error": f"Fallback parsing used. Groq API error: {error}" if error else "Fallback parsing used"
         }
     
     def generate_clarification_request(self, missing: list) -> str:

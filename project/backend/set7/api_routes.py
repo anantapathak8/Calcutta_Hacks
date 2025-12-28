@@ -73,7 +73,7 @@ def parse_command():
         # Check if NLP processor is available
         if not nlp_processor:
             return jsonify({
-                "error": "NLP processor not initialized. Please make sure Ollama is running."
+                "error": "NLP processor not initialized. API key may be missing."
             }), 500
         
         # Parse command using NLP
