@@ -160,6 +160,157 @@ def get_hardware_status():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ============ Hardware Security Key APIs ============
+from set4.hardware_key import (
+    HardwareKeyManager, 
+    HardwareKeyVerifier, 
+    get_monitor, 
+    get_current_status,
+    verify_with_password
+)
+
+@app.route('/api/hardware-key/status', methods=['GET'])
+def get_hardware_key_status():
+    """Get the current hardware key verification status."""
+    try:
+        # First try cached status from monitor
+        status = get_current_status()
+        
+        # If status is UNKNOWN or UNTRUSTED, do a fresh check for key
+        if status.get("status") in ["UNKNOWN", "UNTRUSTED"]:
+            verifier = HardwareKeyVerifier()
+            
+            # ONLY check for key drive - NOT any writable USB
+            key_drive = verifier.find_key_drive()
+            if key_drive:
+                return jsonify({
+                    "status": "DETECTED",
+                    "message": "Hardware key found",
+                    "unlocked": False,
+                    "drive_info": key_drive,
+                    "last_check": __import__('datetime').datetime.now().isoformat()
+                })
+        
+        return jsonify(status)
+    except Exception as e:
+        return jsonify({"error": str(e), "status": "ERROR"}), 500
+
+@app.route('/api/hardware-key/drives', methods=['GET'])
+def get_hardware_key_drives():
+    """List all detected USB drives."""
+    try:
+        verifier = HardwareKeyVerifier()
+        drives = verifier.detect_usb_drives()
+        return jsonify({
+            "success": True,
+            "drives": drives,
+            "count": len(drives)
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/hardware-key/generate', methods=['POST'])
+def generate_hardware_key():
+    """Generate a new hardware security key on the specified drive."""
+    try:
+        data = request.json
+        mount_path = data.get("mount_path")
+        password = data.get("password")
+        
+        if not mount_path:
+            return jsonify({
+                "success": False,
+                "error": "mount_path is required"
+            }), 400
+        
+        if not password or len(password) < 8:
+            return jsonify({
+                "success": False,
+                "error": "Password must be at least 8 characters"
+            }), 400
+        
+        manager = HardwareKeyManager()
+        result = manager.generate_key(mount_path, password)
+        
+        if result.get("success"):
+            # Start monitoring with this password
+            monitor = get_monitor()
+            monitor.set_password(password)
+            if not monitor.is_running:
+                monitor.start_monitoring()
+            
+            return jsonify(result)
+        else:
+            return jsonify(result), 400
+            
+    except Exception as e:
+        logging.error(f"Error generating hardware key: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/hardware-key/verify', methods=['POST'])
+def verify_hardware_key():
+    """Verify the hardware security key with a password."""
+    try:
+        data = request.json
+        password = data.get("password")
+        
+        if not password:
+            return jsonify({
+                "success": False,
+                "error": "Password is required"
+            }), 400
+        
+        result = verify_with_password(password)
+        
+        return jsonify({
+            "success": result.get("valid", False),
+            **result
+        })
+        
+    except Exception as e:
+        logging.error(f"Error verifying hardware key: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/hardware-key/monitor/start', methods=['POST'])
+def start_hardware_key_monitor():
+    """Start the background hardware key monitor."""
+    try:
+        data = request.json or {}
+        password = data.get("password")
+        
+        monitor = get_monitor()
+        
+        if password:
+            monitor.set_password(password)
+        
+        if not monitor.is_running:
+            monitor.start_monitoring()
+            return jsonify({
+                "success": True,
+                "message": "Hardware key monitoring started"
+            })
+        else:
+            return jsonify({
+                "success": True,
+                "message": "Monitor already running"
+            })
+            
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/hardware-key/monitor/stop', methods=['POST'])
+def stop_hardware_key_monitor():
+    """Stop the background hardware key monitor."""
+    try:
+        monitor = get_monitor()
+        monitor.stop_monitoring()
+        return jsonify({
+            "success": True,
+            "message": "Hardware key monitoring stopped"
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 # ============ Deauth Simulation & Detection APIs ============
 
 @app.route('/api/deauth/networks', methods=['GET'])

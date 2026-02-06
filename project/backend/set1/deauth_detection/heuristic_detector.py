@@ -13,7 +13,7 @@ class HeuristicDetector:
     Rule-based heuristic detection for deauth attacks.
     Used as fallback when ML model is unavailable.
     """
-    
+        
     @staticmethod
     def detect(network_data: Dict) -> Dict:
         """

@@ -74,8 +74,9 @@ def run_fast_scan():
     global latest_findings
     log_event("SYSTEM", "Starting FAST scan cycle...", "SCAN")
     
-    # Update common ports
-    fast_ports = scan_ports(mode="FAST")
+    # Update common ports - scan_ports now returns a dict with open_ports, vulnerable_ports, summary
+    scan_result = scan_ports(mode="FAST")
+    fast_ports = scan_result.get("open_ports", []) if isinstance(scan_result, dict) else scan_result
     
     # Merge strategy: Keep FULL scan ports if they exist, but update FAST ports
     # For simplicity in this demo, we will blindly merge unique ports
@@ -87,6 +88,11 @@ def run_fast_scan():
         port_map[p['port']] = p
     
     latest_findings["scans"]["ports"] = list(port_map.values())
+    
+    # Store vulnerability summary
+    if isinstance(scan_result, dict):
+        latest_findings["scans"]["port_vulnerabilities"] = scan_result.get("vulnerable_ports", [])
+        latest_findings["scans"]["port_summary"] = scan_result.get("summary", {})
     
     # Run other fast checks
     latest_findings["scans"]["mitm"] = check_mitm()
@@ -101,9 +107,15 @@ def run_full_scan():
     global latest_findings
     log_event("SYSTEM", "Starting FULL scan cycle (Background)...", "SCAN")
     
-    # Update ALL ports
-    full_ports = scan_ports(mode="FULL")
+    # Update ALL ports - scan_ports now returns a dict
+    scan_result = scan_ports(mode="FULL")
+    full_ports = scan_result.get("open_ports", []) if isinstance(scan_result, dict) else scan_result
     latest_findings["scans"]["ports"] = full_ports
+    
+    # Store vulnerability data
+    if isinstance(scan_result, dict):
+        latest_findings["scans"]["port_vulnerabilities"] = scan_result.get("vulnerable_ports", [])
+        latest_findings["scans"]["port_summary"] = scan_result.get("summary", {})
     
     # Run slow checks
     latest_findings["scans"]["encryption"] = check_encryption()

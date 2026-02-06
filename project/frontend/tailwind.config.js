@@ -12,7 +12,9 @@ export default {
                     dark: '#111111',
                     gray: '#1a1a1a',
                     light: '#2a2a2a',
-                    neon: '#00f3ff',     // Cyan
+                    neon: '#a855f7',     // Purple
+                    pink: '#ec4899',     // Pink  
+                    orange: '#f97316',   // Orange
                     danger: '#ff003c',   // Cyber Red
                     warning: '#fcee0a',  // Cyber Yellow
                     success: '#0aff60',  // Cyber Green
@@ -21,7 +23,9 @@ export default {
                 }
             },
             fontFamily: {
-                mono: ['"JetBrains Mono"', 'monospace'], // Tech font
+                mono: ['"JetBrains Mono"', 'monospace'],
+                sans: ['Inter', 'sans-serif'],
+                display: ['"Space Grotesk"', 'Inter', 'sans-serif'],
             },
             animation: {
                 'grid-flow': 'grid-flow 20s linear infinite',
@@ -45,10 +49,12 @@ export default {
                 }
             },
             backgroundImage: {
-                'grid-pattern': "linear-gradient(to right, #111 1px, transparent 1px), linear-gradient(to bottom, #111 1px, transparent 1px)",
+                'grid-pattern': "linear-gradient(to right, rgba(168, 85, 247, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(168, 85, 247, 0.05) 1px, transparent 1px)",
             },
             boxShadow: {
                 'neon-blue': '0 0 5px #00f3ff, 0 0 10px #00f3ff',
+                'neon-purple': '0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3)',
+                'neon-pink': '0 0 10px rgba(236, 72, 153, 0.5), 0 0 20px rgba(236, 72, 153, 0.3)',
                 'neon-red': '0 0 5px #ff003c, 0 0 10px #ff003c',
             }
         },

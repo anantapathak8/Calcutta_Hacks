@@ -1,91 +1,127 @@
 {
-  "timestamp": 1766893982.3375432,
+  "timestamp": 1770296331.9366634,
   "scans": {
     "ports": [
       {
         "port": 22,
         "service": "ssh",
-        "state": "open"
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": false,
+          "severity": "INFO",
+          "reason": "No known critical vulnerabilities",
+          "service_name": "ssh"
+        }
       },
       {
         "port": 80,
         "service": "http",
-        "state": "open"
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "MEDIUM",
+          "reason": "Unencrypted web traffic, vulnerable to MITM attacks",
+          "service_name": "HTTP"
+        }
       },
       {
         "port": 1716,
         "service": "tcpwrapped",
-        "state": "open"
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": false,
+          "severity": "INFO",
+          "reason": "No known critical vulnerabilities",
+          "service_name": "tcpwrapped"
+        }
       },
       {
         "port": 5001,
         "service": "http",
-        "state": "open"
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "LOW",
+          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
+          "service_name": "http"
+        }
       },
       {
         "port": 9000,
         "service": "http",
-        "state": "open"
-      },
-      {
-        "port": 9090,
-        "service": "zeus-admin",
-        "state": "open"
-      },
-      {
-        "port": 9092,
-        "service": "XmlIpcRegSvc",
-        "state": "open"
-      },
-      {
-        "port": 9101,
-        "service": "jetdirect",
-        "state": "open"
-      },
-      {
-        "port": 9102,
-        "service": "jetdirect",
-        "state": "open"
-      },
-      {
-        "port": 9222,
-        "service": "teamcoherence",
-        "state": "open"
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "LOW",
+          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
+          "service_name": "http"
+        }
       },
       {
         "port": 20241,
         "service": "http",
-        "state": "open"
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "LOW",
+          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
+          "service_name": "http"
+        }
       },
       {
-        "port": 39811,
+        "port": 34811,
+        "service": "unknown",
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "LOW",
+          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
+          "service_name": "unknown"
+        }
+      },
+      {
+        "port": 37081,
+        "service": "http",
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "LOW",
+          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
+          "service_name": "http"
+        }
+      },
+      {
+        "port": 38997,
+        "service": "unknown",
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "LOW",
+          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
+          "service_name": "unknown"
+        }
+      },
+      {
+        "port": 39963,
+        "service": "http",
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "LOW",
+          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
+          "service_name": "http"
+        }
+      },
+      {
+        "port": 43895,
         "service": "",
-        "state": "open"
-      },
-      {
-        "port": 40101,
-        "service": "http",
-        "state": "open"
-      },
-      {
-        "port": 41111,
-        "service": "fs-qos",
-        "state": "open"
-      },
-      {
-        "port": 43097,
-        "service": "unknown",
-        "state": "open"
-      },
-      {
-        "port": 45307,
-        "service": "unknown",
-        "state": "open"
-      },
-      {
-        "port": 45619,
-        "service": "http",
-        "state": "open"
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": false,
+          "severity": "INFO",
+          "reason": "No known critical vulnerabilities",
+          "service_name": ""
+        }
       }
     ],
     "encryption": {
@@ -93,17 +129,23 @@
       "details": "Wireless encryption is active."
     },
     "router": {
-      "gateway": "10.115.21.81",
-      "issues": []
+      "gateway": "192.168.0.1",
+      "issues": [
+        "Port 80 is OPEN on router (Potential Risk)",
+        "Router Admin Panel detected on HTTP (Unencrypted)",
+        "Port 443 is OPEN on router (Potential Risk)",
+        "Port 1900 is OPEN on router (Potential Risk)",
+        "UPnP service might be exposed (High Risk)"
+      ]
     },
     "mitm": {
       "status": "SAFE",
       "details": "No duplicate MAC addresses found in ARP table."
     },
     "deauth_prediction": {
-      "status": "WARNING",
-      "details": "Unstable connection detected. Monitor for deauth packets.",
-      "probability": "Medium"
+      "status": "SAFE",
+      "details": "Wi-Fi connection appears stable.",
+      "probability": "Low"
     },
     "network_graph": {
       "nodes": [
@@ -158,281 +200,288 @@
         }
       ]
     },
-    "config_issues": []
+    "config_issues": [],
+    "port_vulnerabilities": [
+      {
+        "port": 80,
+        "service": "http",
+        "state": "open",
+        "vulnerability": {
+          "is_vulnerable": true,
+          "severity": "MEDIUM",
+          "reason": "Unencrypted web traffic, vulnerable to MITM attacks",
+          "service_name": "HTTP"
+        }
+      }
+    ],
+    "port_summary": {
+      "total_open": 4,
+      "total_vulnerable": 1,
+      "critical": 0,
+      "high": 0,
+      "medium": 1
+    }
   },
   "hardware_trust": {
     "status": "UNTRUSTED",
-    "message": "Hardware Security Key removed! Authenticated actions restricted.",
+    "message": "Hardware Security Key not detected.",
     "unlocked": false
   },
-  "risk_score": 62,
+  "risk_score": 50,
   "risk_level": "MEDIUM",
-  "ai_explanation": "System Scan Complete. Moderate risks identified. ",
-  "action_plan": [
-    "echo 'Alert: High Risk Detected'"
-  ],
+  "ai_explanation": "### System Security Status\nThe system has a **Risk Score of 50/100**, indicating moderate security concerns. Key risks include:\n* **Unencrypted web traffic** on port 80, making it vulnerable to **Man-In-The-Middle (MITM) attacks**, where an attacker can intercept and alter sensitive information.\n* **Potential security misconfigurations** on non-standard ports, which can be exploited by attackers to gain unauthorized access to the system. \n**Immediate attention is required** to address these vulnerabilities and ensure the system's security.",
+  "action_plan": [],
   "logs": [
     {
-      "timestamp": "09:22:59",
-      "type": "WARNING",
-      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
-    },
-    {
-      "timestamp": "09:22:59",
-      "type": "INFO",
-      "message": "[AI] Ollama client initialized (Model: llama3.2:latest)"
-    },
-    {
-      "timestamp": "09:23:00",
-      "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000025912}'"
-    },
-    {
-      "timestamp": "09:23:02",
-      "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Connection error."
-    },
-    {
-      "timestamp": "09:23:02",
-      "type": "ACTION",
-      "message": "[MCP] Executing 1 mitigation actions..."
-    },
-    {
-      "timestamp": "09:23:02",
-      "type": "ACTION",
-      "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
-    },
-    {
-      "timestamp": "09:23:02",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 22 (ssh)"
-    },
-    {
-      "timestamp": "09:23:02",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 80 (http)"
-    },
-    {
-      "timestamp": "09:23:02",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 5001 (http)"
-    },
-    {
-      "timestamp": "09:23:02",
+      "timestamp": "16:53:04",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "09:23:02",
+      "timestamp": "16:53:04",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "09:23:02",
+      "timestamp": "16:53:04",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "09:23:02",
+      "timestamp": "16:53:04",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "09:23:02",
+      "timestamp": "16:53:04",
       "type": "INFO",
-      "message": "[AI] Ollama client initialized (Model: llama3.2:latest)"
+      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
     },
     {
-      "timestamp": "09:23:02",
+      "timestamp": "16:53:04",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.00001836}'"
+      "message": "[RAG] Search failed: [Errno -3] Temporary failure in name resolution"
     },
     {
-      "timestamp": "09:23:03",
-      "type": "SCAN",
-      "message": "[SYSTEM] Starting FAST scan cycle..."
-    },
-    {
-      "timestamp": "09:23:03",
-      "type": "SCAN",
-      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
-    },
-    {
-      "timestamp": "09:23:04",
+      "timestamp": "16:53:05",
       "type": "WARNING",
       "message": "[AI] Ollama Generation failed: Connection error."
     },
     {
-      "timestamp": "09:23:04",
-      "type": "ACTION",
-      "message": "[MCP] Executing 1 mitigation actions..."
+      "timestamp": "16:53:05",
+      "type": "SCAN",
+      "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "09:23:04",
-      "type": "ACTION",
-      "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
+      "timestamp": "16:53:05",
+      "type": "SCAN",
+      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
+      "timestamp": "18:28:38",
+      "type": "INFO",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "09:23:04",
+      "timestamp": "18:28:38",
       "type": "WARNING",
-      "message": "[SCAN] Found open port: 80 (http)"
+      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
+      "timestamp": "18:28:38",
+      "type": "INFO",
       "message": "[SCAN] Found open port: 1716 (tcpwrapped)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
+      "timestamp": "18:28:38",
+      "type": "INFO",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
+      "timestamp": "18:28:38",
+      "type": "INFO",
       "message": "[SCAN] Found open port: 9000 (http)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 9090 (zeus-admin)"
-    },
-    {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 9092 (XmlIpcRegSvc)"
-    },
-    {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 9101 (jetdirect)"
-    },
-    {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 9102 (jetdirect)"
-    },
-    {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 9222 (teamcoherence)"
-    },
-    {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
+      "timestamp": "18:28:38",
+      "type": "INFO",
       "message": "[SCAN] Found open port: 20241 (http)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 39811 ()"
+      "timestamp": "18:28:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 34811 (unknown)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 40101 (http)"
+      "timestamp": "18:28:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 37081 (http)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 41111 (fs-qos)"
+      "timestamp": "18:28:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 38997 (unknown)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 43097 (unknown)"
+      "timestamp": "18:28:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 39963 (http)"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 45307 (unknown)"
+      "timestamp": "18:28:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 43895 ()"
     },
     {
-      "timestamp": "09:23:04",
-      "type": "WARNING",
-      "message": "[SCAN] Found open port: 45619 (http)"
+      "timestamp": "18:28:38",
+      "type": "ERROR",
+      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
     },
     {
-      "timestamp": "09:23:04",
+      "timestamp": "18:28:38",
+      "type": "ERROR",
+      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
+    },
+    {
+      "timestamp": "18:28:38",
       "type": "SCAN",
       "message": "[SCAN] Checking Wi-Fi encryption standards..."
     },
     {
-      "timestamp": "09:23:04",
+      "timestamp": "18:28:38",
       "type": "SCAN",
-      "message": "[SCAN] Checking router security for gateway: 10.115.21.81"
+      "message": "[SCAN] Checking router security for gateway: None"
     },
     {
-      "timestamp": "09:23:05",
-      "type": "SCAN",
-      "message": "[SET2] Starting Device Discovery (Network Graph)..."
+      "timestamp": "18:28:45",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "09:23:05",
+      "timestamp": "18:28:45",
       "type": "WARNING",
-      "message": "[SET2] Device Discovery failed/skipped ([Errno 1] Operation not permitted). Using Simulation Mode."
+      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
     },
     {
-      "timestamp": "09:23:05",
+      "timestamp": "18:28:45",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 5001 (http)"
+    },
+    {
+      "timestamp": "18:28:45",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 9000 (http)"
+    },
+    {
+      "timestamp": "18:28:45",
+      "type": "ERROR",
+      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
+    },
+    {
+      "timestamp": "18:28:45",
+      "type": "ERROR",
+      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
+    },
+    {
+      "timestamp": "18:28:45",
+      "type": "SCAN",
+      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
+    },
+    {
+      "timestamp": "18:28:45",
+      "type": "SCAN",
+      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
+    },
+    {
+      "timestamp": "18:28:45",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "09:23:05",
+      "timestamp": "18:28:45",
       "type": "WARNING",
       "message": "[RISK] Risk penalty applied: Hardware Key Missing"
     },
     {
-      "timestamp": "09:23:05",
+      "timestamp": "18:28:45",
       "type": "INFO",
-      "message": "[AI] Ollama client initialized (Model: llama3.2:latest)"
+      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
     },
     {
-      "timestamp": "09:23:06",
+      "timestamp": "18:28:46",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `sentinel_security_rules` doesn\\'t exist!\"},\"time\":0.000023912}'"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
     },
     {
-      "timestamp": "09:23:06",
+      "timestamp": "18:28:50",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "09:23:06",
+      "timestamp": "18:28:50",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "09:23:07",
+      "timestamp": "18:28:51",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 22 (ssh)"
+    },
+    {
+      "timestamp": "18:28:51",
       "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Connection error."
+      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
     },
     {
-      "timestamp": "09:23:07",
-      "type": "ACTION",
-      "message": "[MCP] Executing 1 mitigation actions..."
+      "timestamp": "18:28:51",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "09:23:07",
-      "type": "ACTION",
-      "message": "[MCP] EXECUTING CMD: echo 'Alert: High Risk Detected'"
+      "timestamp": "18:28:51",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 9000 (http)"
+    },
+    {
+      "timestamp": "18:28:51",
+      "type": "ERROR",
+      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
+    },
+    {
+      "timestamp": "18:28:51",
+      "type": "ERROR",
+      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
+    },
+    {
+      "timestamp": "18:28:51",
+      "type": "SCAN",
+      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
+    },
+    {
+      "timestamp": "18:28:51",
+      "type": "SCAN",
+      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
+    },
+    {
+      "timestamp": "18:28:51",
+      "type": "INFO",
+      "message": "[AI] Correlating findings and calculating risk..."
+    },
+    {
+      "timestamp": "18:28:51",
+      "type": "WARNING",
+      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
+    },
+    {
+      "timestamp": "18:28:51",
+      "type": "INFO",
+      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
+    },
+    {
+      "timestamp": "18:28:53",
+      "type": "WARNING",
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
     }
   ],
-  "mcp_results": [
-    {
-      "command": "echo 'Alert: High Risk Detected'",
-      "status": "executed",
-      "output": "Alert: High Risk Detected\n"
-    },
-    {
-      "command": "COMPLETION_MESSAGE",
-      "status": "success",
-      "output": "\u2713 All commands executed successfully"
-    }
-  ]
+  "mcp_results": []
 }

@@ -1,6 +1,7 @@
 import subprocess
 import shlex
 from utils.terminal_logger import log_mcp_action
+from utils.port_manager import open_port, close_port
 
 # Whitelist of allowed executables and sensitive arguments
 ALLOWED_COMMANDS = [
@@ -18,6 +19,8 @@ def is_safe_command(cmd_str):
     Parses command to ensure it's in the whitelist.
     """
     if cmd_str.startswith("START_SERVER") or cmd_str.startswith("STOP_SERVER"):
+        return True
+    if cmd_str.startswith("OPEN_PORT") or cmd_str.startswith("CLOSE_PORT"):
         return True
 
     try:
@@ -57,7 +60,18 @@ def execute_mitigation(action_plan):
             try:
                 log_mcp_action(cmd, safe=True)
                 
-                if cmd.startswith("START_SERVER"):
+                if cmd.startswith("OPEN_PORT"):
+                    try:
+                        _, port_str = cmd.split()
+                        result = open_port(port_str)
+                        if result["success"]:
+                            results.append({"command": cmd, "status": "executed", "output": result["message"]})
+                        else:
+                            results.append({"command": cmd, "status": "failed", "error": result["message"]})
+                    except Exception as e:
+                        results.append({"command": cmd, "status": "failed", "error": str(e)})
+                
+                elif cmd.startswith("START_SERVER"):
                     try:
                         _, port_str = cmd.split()
                         port = int(port_str)
@@ -76,6 +90,17 @@ def execute_mitigation(action_plan):
                     except Exception as e:
                         results.append({"command": cmd, "status": "failed", "error": str(e)})
 
+                elif cmd.startswith("CLOSE_PORT"):
+                    try:
+                        _, port_str = cmd.split()
+                        result = close_port(port_str)
+                        if result["success"]:
+                            results.append({"command": cmd, "status": "executed", "output": result["message"]})
+                        else:
+                            results.append({"command": cmd, "status": "failed", "error": result["message"]})
+                    except Exception as e:
+                        results.append({"command": cmd, "status": "failed", "error": str(e)})
+                
                 elif cmd.startswith("STOP_SERVER"):
                     try:
                         _, port_str = cmd.split()

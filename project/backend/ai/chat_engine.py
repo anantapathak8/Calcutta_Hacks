@@ -11,24 +11,44 @@ def parse_simple_command(user_input):
     """
     user_input = user_input.strip().lower()
     
-    # Pattern: "open port 8080" or "start server 8080"
-    open_port_match = re.search(r'\b(?:open|start).*?(?:port|server)\s+(\d+)\b', user_input)
+    # Pattern: "open port 8080" - FIREWALL RULE
+    open_port_match = re.search(r'\b(?:open).*?(?:port)\s+(\d+)\b', user_input)
     if open_port_match:
         port = open_port_match.group(1)
+        return {
+            "command": f"OPEN_PORT {port}",
+            "risk_level": "MEDIUM",
+            "explanation": f"Opening firewall for port {port}"
+        }
+    
+    # Pattern: "close port 9102" - FIREWALL RULE + KILL PROCESS
+    close_port_match = re.search(r'\b(?:close|block).*?(?:port)\s+(\d+)\b', user_input)
+    if close_port_match:
+        port = close_port_match.group(1)
+        return {
+            "command": f"CLOSE_PORT {port}",
+            "risk_level": "HIGH",
+            "explanation": f"Closing port {port} and killing any process using it"
+        }
+    
+    # Pattern: "start server 8080" - START HTTP SERVER
+    start_server_match = re.search(r'\b(?:start).*?(?:server)\s+(\d+)\b', user_input)
+    if start_server_match:
+        port = start_server_match.group(1)
         return {
             "command": f"START_SERVER {port}",
             "risk_level": "LOW",
             "explanation": f"Starting HTTP server on port {port}"
         }
     
-    # Pattern: "close port 9102" or "stop server 9102"
-    close_port_match = re.search(r'\b(?:close|stop).*?(?:port|server)\s+(\d+)\b', user_input)
-    if close_port_match:
-        port = close_port_match.group(1)
+    # Pattern: "stop server 9102"
+    stop_server_match = re.search(r'\b(?:stop).*?(?:server)\s+(\d+)\b', user_input)
+    if stop_server_match:
+        port = stop_server_match.group(1)
         return {
             "command": f"STOP_SERVER {port}",
             "risk_level": "LOW",
-            "explanation": f"Stopping server on port {port}"
+            "explanation": f"Stopping HTTP server on port {port}"
         }
     
     # Pattern: "scan port 80"
@@ -87,17 +107,25 @@ def process_chat_request(user_input):
     Response: {"command": "nmap -p 80 127.0.0.1", "risk_level": "LOW", "explanation": "Scanning port 80 locally."}
 
     User: "open port 8080"
-    Response: {"command": "START_SERVER 8080", "risk_level": "LOW", "explanation": "Starting internal HTTP server on port 8080."}
+    Response: {"command": "OPEN_PORT 8080", "risk_level": "MEDIUM", "explanation": "Opening firewall for port 8080."}
 
     User: "close port 8080"
-    Response: {"command": "STOP_SERVER 8080", "risk_level": "LOW", "explanation": "Stopping internal HTTP server on port 8080."}
+    Response: {"command": "CLOSE_PORT 8080", "risk_level": "HIGH", "explanation": "Closing port 8080 and killing processes."}
+    
+    User: "start server 8080"
+    Response: {"command": "START_SERVER 8080", "risk_level": "LOW", "explanation": "Starting HTTP server on port 8080."}
+
+    User: "stop server 8080"
+    Response: {"command": "STOP_SERVER 8080", "risk_level": "LOW", "explanation": "Stopping HTTP server on port 8080."}
 
     User: "block ip 1.2.3.4"
     Response: {"command": "iptables -A INPUT -s 1.2.3.4 -j DROP", "risk_level": "HIGH", "explanation": "Blocking IP 1.2.3.4 via iptables."}
 
     RULES:
-    1. For "open port X", ALWAYS use: START_SERVER X
-    2. For "close port X", ALWAYS use: STOP_SERVER X
+    1. For "open port X", use: OPEN_PORT X (opens firewall)
+    2. For "close port X", use: CLOSE_PORT X (closes firewall + kills process)
+    3. For "start server X", use: START_SERVER X (starts HTTP server)
+    4. For "stop server X", use: STOP_SERVER X (stops HTTP server)
     3. For "scan port X", use: nmap -p X 127.0.0.1
     4. For "block ip X", use: iptables -A INPUT -s X -j DROP
     5. If request is not one of these, return "command": null.
