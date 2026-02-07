@@ -120,9 +120,9 @@ const DashboardPage = () => {
             </motion.div>
 
             {/* TOP ROW - Enhanced with Purple Theme */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6">
                 {/* RISK GAUGE - Purple Themed */}
-                <motion.div variants={itemVars} className="lg:col-span-4 h-full">
+                <motion.div variants={itemVars} className="md:col-span-1 xl:col-span-3 h-full">
                     <div className="group h-full min-h-[300px] relative rounded-2xl border-2 border-purple-500/40 shadow-neon-purple transition-all duration-500 hover:shadow-neon-pink hover:border-pink-500/60 hover:scale-[1.02] overflow-hidden glass-card">
                         {/* Animated Border Glow */}
                         <div className="absolute inset-0 rounded-2xl shadow-[0_0_30px_rgba(168,85,247,0.3)] animate-glow-pulse pointer-events-none" />
@@ -137,21 +137,21 @@ const DashboardPage = () => {
                 </motion.div>
 
                 {/* SECURITY METRICS - Purple Themed Cards */}
-                <motion.div variants={itemVars} className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <motion.div variants={itemVars} className="md:col-span-1 xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                     {/* HARDWARE KEY STATUS */}
                     <HardwareKeyStatus />
                     {/* ARP MONITOR CARD - Purple Theme */}
                     <div className={`
-                        group relative overflow-hidden rounded-2xl p-6
+                        group relative overflow-hidden rounded-2xl p-4 xl:p-6
                         bg-gradient-to-br ${mitm.status === 'DANGER'
                             ? 'from-red-900/40 via-orange-950/30 to-black/70 border-red-500/60'
                             : 'from-emerald-900/40 via-green-950/30 to-black/70 border-emerald-500/60'}
                         border-2 backdrop-blur-xl
                         shadow-neon-purple
                         transition-all duration-500 ease-out
-                        hover:scale-[1.03] hover:shadow-neon-pink
+                        hover:scale-[1.02] hover:shadow-neon-pink
                         hover:border-purple-500/60
-                        min-h-[200px] flex flex-col justify-between
+                        min-h-[180px] xl:min-h-[200px] flex flex-col justify-between
                         cursor-pointer
                     `}>
                         {/* Animated Gradient Overlay */}
@@ -189,8 +189,8 @@ const DashboardPage = () => {
                                     <Activity size={24} className={`${mitm.status === 'DANGER' ? 'text-red-400' : 'text-emerald-400'} transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_0_10px_currentColor]`} />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-bold text-gray-100 uppercase tracking-widest transition-colors group-hover:text-purple-300">ARP Monitor</h3>
-                                    <p className="text-xs text-gray-500 mt-0.5 transition-colors group-hover:text-purple-400/70 font-medium">Network Integrity</p>
+                                    <h3 className="text-xs xl:text-sm font-bold text-gray-100 uppercase tracking-wider xl:tracking-widest transition-colors group-hover:text-purple-300">ARP Monitor</h3>
+                                    <p className="text-[10px] xl:text-xs text-gray-500 mt-0.5 transition-colors group-hover:text-purple-400/70 font-medium">Network Integrity</p>
                                 </div>
                             </div>
                             {mitm.status === 'DANGER' && (
@@ -207,7 +207,7 @@ const DashboardPage = () => {
                         {/* Status */}
                         <div className="z-10 relative">
                             <div className={`
-                                text-4xl font-black tracking-tight mb-2
+                                text-2xl xl:text-4xl font-black tracking-tight mb-2
                                 transition-all duration-300
                                 group-hover:scale-105
                                 ${mitm.status === 'DANGER'
@@ -216,7 +216,7 @@ const DashboardPage = () => {
                             `}>
                                 {mitm.status === 'DANGER' ? 'COMPROMISED' : 'SECURE'}
                             </div>
-                            <p className="text-sm text-gray-300 uppercase tracking-wide transition-colors group-hover:text-purple-200 font-medium">
+                            <p className="text-xs xl:text-sm text-gray-300 uppercase tracking-wide transition-colors group-hover:text-purple-200 font-medium">
                                 {mitm.status === 'DANGER' ? '⚠️ ARP Spoofing Detected' : '✓ No Anomalies Detected'}
                             </p>
                         </div>
@@ -224,16 +224,16 @@ const DashboardPage = () => {
 
                     {/* WIFI SECURITY CARD - Purple Theme */}
                     <div className={`
-                        group relative overflow-hidden rounded-2xl p-6
+                        group relative overflow-hidden rounded-2xl p-4 xl:p-6
                         bg-gradient-to-br ${encryption.status === 'UNSECURE'
                             ? 'from-amber-900/40 via-yellow-950/30 to-black/70 border-amber-500/60'
                             : 'from-cyan-900/40 via-blue-950/30 to-black/70 border-cyan-500/60'}
                         border-2 backdrop-blur-xl
                         shadow-neon-purple
                         transition-all duration-500 ease-out
-                        hover:scale-[1.03] hover:shadow-neon-pink
+                        hover:scale-[1.02] hover:shadow-neon-pink
                         hover:border-purple-500/60
-                        min-h-[200px] flex flex-col justify-between
+                        min-h-[180px] xl:min-h-[200px] flex flex-col justify-between
                         cursor-pointer
                     `}>
                         {/* Animated Gradient Overlay */}
@@ -271,8 +271,8 @@ const DashboardPage = () => {
                                     <Wifi size={24} className={`${encryption.status === 'UNSECURE' ? 'text-amber-400' : 'text-cyan-400'} transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_0_10px_currentColor]`} />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-bold text-gray-100 uppercase tracking-widest transition-colors group-hover:text-purple-300">WiFi Security</h3>
-                                    <p className="text-xs text-gray-500 mt-0.5 transition-colors group-hover:text-purple-400/70 font-medium">Encryption Status</p>
+                                    <h3 className="text-xs xl:text-sm font-bold text-gray-100 uppercase tracking-wider xl:tracking-widest transition-colors group-hover:text-purple-300">WiFi Security</h3>
+                                    <p className="text-[10px] xl:text-xs text-gray-500 mt-0.5 transition-colors group-hover:text-purple-400/70 font-medium">Encryption Status</p>
                                 </div>
                             </div>
                             {encryption.status === 'UNSECURE' && (
@@ -288,7 +288,7 @@ const DashboardPage = () => {
                         {/* Status */}
                         <div className="z-10 relative">
                             <div className={`
-                                text-4xl font-black tracking-tight mb-2
+                                text-2xl xl:text-4xl font-black tracking-tight mb-2
                                 transition-all duration-300
                                 group-hover:scale-105
                                 ${encryption.status === 'UNSECURE'
@@ -297,7 +297,7 @@ const DashboardPage = () => {
                             `}>
                                 {encryption.status === 'UNSECURE' ? 'OPEN' : 'WPA2/3'}
                             </div>
-                            <p className="text-sm text-gray-300 uppercase tracking-wide transition-colors group-hover:text-purple-200 font-medium">
+                            <p className="text-xs xl:text-sm text-gray-300 uppercase tracking-wide transition-colors group-hover:text-purple-200 font-medium">
                                 {encryption.status === 'UNSECURE' ? '⚠️ Traffic Visible' : '✓ Encrypted Connection'}
                             </p>
                         </div>

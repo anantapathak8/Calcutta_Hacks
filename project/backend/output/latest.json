@@ -1,5 +1,5 @@
 {
-  "timestamp": 1770296331.9366634,
+  "timestamp": 1770454781.209404,
   "scans": {
     "ports": [
       {
@@ -67,61 +67,6 @@
           "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
           "service_name": "http"
         }
-      },
-      {
-        "port": 34811,
-        "service": "unknown",
-        "state": "open",
-        "vulnerability": {
-          "is_vulnerable": true,
-          "severity": "LOW",
-          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
-          "service_name": "unknown"
-        }
-      },
-      {
-        "port": 37081,
-        "service": "http",
-        "state": "open",
-        "vulnerability": {
-          "is_vulnerable": true,
-          "severity": "LOW",
-          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
-          "service_name": "http"
-        }
-      },
-      {
-        "port": 38997,
-        "service": "unknown",
-        "state": "open",
-        "vulnerability": {
-          "is_vulnerable": true,
-          "severity": "LOW",
-          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
-          "service_name": "unknown"
-        }
-      },
-      {
-        "port": 39963,
-        "service": "http",
-        "state": "open",
-        "vulnerability": {
-          "is_vulnerable": true,
-          "severity": "LOW",
-          "reason": "Unencrypted service on non-standard port, potential security misconfiguration",
-          "service_name": "http"
-        }
-      },
-      {
-        "port": 43895,
-        "service": "",
-        "state": "open",
-        "vulnerability": {
-          "is_vulnerable": false,
-          "severity": "INFO",
-          "reason": "No known critical vulnerabilities",
-          "service_name": ""
-        }
       }
     ],
     "encryption": {
@@ -129,14 +74,8 @@
       "details": "Wireless encryption is active."
     },
     "router": {
-      "gateway": "192.168.0.1",
-      "issues": [
-        "Port 80 is OPEN on router (Potential Risk)",
-        "Router Admin Panel detected on HTTP (Unencrypted)",
-        "Port 443 is OPEN on router (Potential Risk)",
-        "Port 1900 is OPEN on router (Potential Risk)",
-        "UPnP service might be exposed (High Risk)"
-      ]
+      "gateway": "10.13.98.113",
+      "issues": []
     },
     "mitm": {
       "status": "SAFE",
@@ -223,264 +162,271 @@
     }
   },
   "hardware_trust": {
-    "status": "UNTRUSTED",
-    "message": "Hardware Security Key not detected.",
-    "unlocked": false
+    "status": "TRUSTED",
+    "message": "Hardware security key verified (signature match)",
+    "unlocked": true,
+    "signature_valid": true,
+    "drive_info": {
+      "name": "SENTINEL",
+      "mount_path": "/run/media/asif/SENTINEL",
+      "size": "1.0GB (1.0GB free)"
+    },
+    "last_check": "2026-02-07T14:29:39.209612"
   },
-  "risk_score": 50,
-  "risk_level": "MEDIUM",
-  "ai_explanation": "### System Security Status\nThe system has a **Risk Score of 50/100**, indicating moderate security concerns. Key risks include:\n* **Unencrypted web traffic** on port 80, making it vulnerable to **Man-In-The-Middle (MITM) attacks**, where an attacker can intercept and alter sensitive information.\n* **Potential security misconfigurations** on non-standard ports, which can be exploited by attackers to gain unauthorized access to the system. \n**Immediate attention is required** to address these vulnerabilities and ensure the system's security.",
+  "risk_score": 15,
+  "risk_level": "LOW",
+  "ai_explanation": "System Scan Complete. Your system appears relatively safe. Basic hygiene checks passed.",
   "action_plan": [],
   "logs": [
     {
-      "timestamp": "16:53:04",
+      "timestamp": "14:29:20",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "16:53:04",
+      "timestamp": "14:29:20",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "16:53:04",
+      "timestamp": "14:29:20",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "16:53:04",
-      "type": "WARNING",
-      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
-    },
-    {
-      "timestamp": "16:53:04",
+      "timestamp": "14:29:20",
       "type": "INFO",
       "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
     },
     {
-      "timestamp": "16:53:04",
-      "type": "WARNING",
-      "message": "[RAG] Search failed: [Errno -3] Temporary failure in name resolution"
-    },
-    {
-      "timestamp": "16:53:05",
-      "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Connection error."
-    },
-    {
-      "timestamp": "16:53:05",
-      "type": "SCAN",
-      "message": "[SYSTEM] Starting FAST scan cycle..."
-    },
-    {
-      "timestamp": "16:53:05",
-      "type": "SCAN",
-      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 22 (ssh)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "WARNING",
-      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 1716 (tcpwrapped)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 5001 (http)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 9000 (http)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 20241 (http)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 34811 (unknown)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 37081 (http)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 38997 (unknown)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 39963 (http)"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 43895 ()"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "ERROR",
-      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "ERROR",
-      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "SCAN",
-      "message": "[SCAN] Checking Wi-Fi encryption standards..."
-    },
-    {
-      "timestamp": "18:28:38",
-      "type": "SCAN",
-      "message": "[SCAN] Checking router security for gateway: None"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 22 (ssh)"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "WARNING",
-      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 5001 (http)"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 9000 (http)"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "ERROR",
-      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "ERROR",
-      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "SCAN",
-      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "SCAN",
-      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "INFO",
-      "message": "[AI] Correlating findings and calculating risk..."
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "WARNING",
-      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
-    },
-    {
-      "timestamp": "18:28:45",
-      "type": "INFO",
-      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
-    },
-    {
-      "timestamp": "18:28:46",
+      "timestamp": "14:29:21",
       "type": "WARNING",
       "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
     },
     {
-      "timestamp": "18:28:50",
+      "timestamp": "14:29:21",
+      "type": "WARNING",
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98976, Requested 1264. Please try again in 3m27.36s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    },
+    {
+      "timestamp": "14:29:21",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "18:28:50",
+      "timestamp": "14:29:21",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "INFO",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "WARNING",
       "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "INFO",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "INFO",
       "message": "[SCAN] Found open port: 9000 (http)"
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "ERROR",
       "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "ERROR",
       "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "18:28:51",
-      "type": "WARNING",
-      "message": "[RISK] Risk penalty applied: Hardware Key Missing"
-    },
-    {
-      "timestamp": "18:28:51",
+      "timestamp": "14:29:23",
       "type": "INFO",
       "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
     },
     {
-      "timestamp": "18:28:53",
+      "timestamp": "14:29:23",
       "type": "WARNING",
       "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
+    },
+    {
+      "timestamp": "14:29:24",
+      "type": "WARNING",
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98973, Requested 1264. Please try again in 3m24.768s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    },
+    {
+      "timestamp": "14:29:24",
+      "type": "SCAN",
+      "message": "[SYSTEM] Starting FAST scan cycle..."
+    },
+    {
+      "timestamp": "14:29:24",
+      "type": "SCAN",
+      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 22 (ssh)"
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "WARNING",
+      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 5001 (http)"
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 9000 (http)"
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "ERROR",
+      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "ERROR",
+      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "SCAN",
+      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "SCAN",
+      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "INFO",
+      "message": "[AI] Correlating findings and calculating risk..."
+    },
+    {
+      "timestamp": "14:29:38",
+      "type": "INFO",
+      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
+    },
+    {
+      "timestamp": "14:29:39",
+      "type": "WARNING",
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
+    },
+    {
+      "timestamp": "14:29:39",
+      "type": "WARNING",
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98956, Requested 1269. Please try again in 3m14.399999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    },
+    {
+      "timestamp": "14:29:39",
+      "type": "SCAN",
+      "message": "[SYSTEM] Starting FAST scan cycle..."
+    },
+    {
+      "timestamp": "14:29:39",
+      "type": "SCAN",
+      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
+    },
+    {
+      "timestamp": "14:29:39",
+      "type": "SCAN",
+      "message": "[SYSTEM] Starting FULL scan cycle (Background)..."
+    },
+    {
+      "timestamp": "14:29:39",
+      "type": "SCAN",
+      "message": "[SCAN] Scanning ports on 127.0.0.1 (FULL mode)..."
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 22 (ssh)"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "WARNING",
+      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 5001 (http)"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 9000 (http)"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "ERROR",
+      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "ERROR",
+      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "SCAN",
+      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "SCAN",
+      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "INFO",
+      "message": "[AI] Correlating findings and calculating risk..."
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "INFO",
+      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "WARNING",
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
+    },
+    {
+      "timestamp": "14:29:41",
+      "type": "WARNING",
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98953, Requested 1264. Please try again in 3m7.488s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
     }
   ],
   "mcp_results": []

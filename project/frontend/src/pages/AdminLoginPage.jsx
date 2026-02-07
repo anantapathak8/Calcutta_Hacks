@@ -35,20 +35,29 @@ const AdminLoginPage = () => {
         }
     }, [isAuthenticated, navigate, from]);
 
-    // Continuous USB scanning
+    // Continuous USB scanning with auto-login
     useEffect(() => {
         let scanInterval;
 
         const scanForUsb = async () => {
             const status = await checkUsbStatus();
 
-            if (status?.status === 'TRUSTED' || status?.status === 'DETECTED') {
-                // USB detected - start authentication sequence
-                setScanPhase(1);
-                setScanning(false);
+            // Check for tampered signature - show error
+            if (status?.status === 'TAMPERED') {
+                setError('Hardware key signature has been tampered! Access denied.');
+                setScanPhase(0);
+                return;
+            }
 
-                // Simulate verification animation
-                setTimeout(() => setScanPhase(2), 1000);
+            // If TRUSTED (valid signature), auto-login
+            if (status?.status === 'TRUSTED') {
+                setScanPhase(1); // detected
+                setScanning(false);
+                setError(null);
+
+                // Start verification animation
+                setTimeout(() => setScanPhase(2), 800);
+                
                 setTimeout(async () => {
                     const success = await login();
                     if (success) {
@@ -58,11 +67,15 @@ const AdminLoginPage = () => {
                             navigate(from, { replace: true });
                         }, 1500);
                     } else {
-                        setError('Authentication failed. Please try again.');
+                        setError('Authentication failed. Signature may be invalid.');
                         setScanPhase(0);
                         setScanning(true);
                     }
-                }, 2500);
+                }, 2000);
+            } else if (status?.status === 'DETECTED') {
+                // USB detected, waiting for signature verification
+                setScanPhase(1);
+                setError(null);
             }
         };
 

@@ -39,10 +39,11 @@ except ImportError:
 KEY_FILENAME = "sentinel_key"  # Visible file (not hidden)
 KEY_VERSION = 1
 SALT_SIZE = 16
-MONITOR_INTERVAL = 5  # seconds
+MONITOR_INTERVAL = 2  # seconds - check signature every 2 seconds
 
 # Global state for monitoring
 _monitor_instance: Optional['HardwareKeyMonitor'] = None
+_trusted_signature: Optional[str] = None  # Store trusted signature for tamper detection
 _current_key_status: Dict[str, Any] = {
     "status": "UNKNOWN",
     "message": "Not initialized",
@@ -433,8 +434,9 @@ class HardwareKeyVerifier:
             if not hmac.compare_digest(key_data.get("signature", ""), expected_signature):
                 return {
                     "status": "TAMPERED",
-                    "message": "Key file signature verification failed",
-                    "valid": False
+                    "message": "Key file signature verification failed - possible tampering detected",
+                    "valid": False,
+                    "signature_valid": False
                 }
             
             # Decrypt payload
@@ -456,6 +458,7 @@ class HardwareKeyVerifier:
                     "status": "VALID",
                     "message": "Hardware security key verified successfully",
                     "valid": True,
+                    "signature_valid": True,
                     "created_at": key_data.get("created_at"),
                     "drive_name": os.path.basename(mount_path)
                 }
@@ -463,7 +466,8 @@ class HardwareKeyVerifier:
                 return {
                     "status": "WRONG_PASSWORD",
                     "message": "Invalid password for this key",
-                    "valid": False
+                    "valid": False,
+                    "signature_valid": True  # Signature was valid, but password is wrong
                 }
                 
         except json.JSONDecodeError:
@@ -576,6 +580,7 @@ class HardwareKeyMonitor:
                     "status": "TRUSTED",
                     "message": "Hardware security key verified",
                     "unlocked": True,
+                    "signature_valid": True,
                     "drive_info": {
                         "name": key_drive["name"],
                         "mount_path": key_drive["mount_path"],
@@ -589,11 +594,28 @@ class HardwareKeyMonitor:
                 
                 _current_key_status = new_status
                 self._last_status = "TRUSTED"
+            elif result.get("status") == "TAMPERED":
+                # Signature verification failed - possible tampering
+                new_status = {
+                    "status": "TAMPERED",
+                    "message": "Hardware key signature invalid - file has been tampered with",
+                    "unlocked": False,
+                    "signature_valid": False,
+                    "drive_info": {
+                        "name": key_drive["name"],
+                        "mount_path": key_drive["mount_path"]
+                    },
+                    "last_check": datetime.now().isoformat()
+                }
+                _current_key_status = new_status
+                self._last_status = "TAMPERED"
+                logging.warning(f"SECURITY ALERT: Hardware key signature tampered on {key_drive['name']}")
             else:
                 new_status = {
                     "status": "UNTRUSTED",
                     "message": result.get("message", "Key verification failed"),
                     "unlocked": False,
+                    "signature_valid": False,
                     "drive_info": {
                         "name": key_drive["name"],
                         "mount_path": key_drive["mount_path"]
@@ -603,19 +625,57 @@ class HardwareKeyMonitor:
                 _current_key_status = new_status
                 self._last_status = "UNTRUSTED"
         else:
-            # No password set, just detect key file presence
-            new_status = {
-                "status": "DETECTED",
-                "message": "Key file found, password required for verification",
-                "unlocked": False,
-                "drive_info": {
-                    "name": key_drive["name"],
-                    "mount_path": key_drive["mount_path"],
-                    "size": key_drive.get("size", "Unknown")
-                },
-                "last_check": datetime.now().isoformat()
-            }
-            _current_key_status = new_status
+            # No password set - use signature-only verification
+            result = verify_signature_only(key_drive["mount_path"])
+            
+            if result.get("valid"):
+                new_status = {
+                    "status": "TRUSTED",
+                    "message": "Hardware security key verified (signature match)",
+                    "unlocked": True,
+                    "signature_valid": True,
+                    "drive_info": {
+                        "name": key_drive["name"],
+                        "mount_path": key_drive["mount_path"],
+                        "size": key_drive.get("size", "Unknown")
+                    },
+                    "last_check": datetime.now().isoformat()
+                }
+                
+                if self._last_status != "TRUSTED" and self._on_key_detected:
+                    self._on_key_detected()
+                
+                _current_key_status = new_status
+                self._last_status = "TRUSTED"
+            elif result.get("status") == "TAMPERED":
+                new_status = {
+                    "status": "TAMPERED",
+                    "message": "Hardware key signature has been tampered with!",
+                    "unlocked": False,
+                    "signature_valid": False,
+                    "drive_info": {
+                        "name": key_drive["name"],
+                        "mount_path": key_drive["mount_path"]
+                    },
+                    "last_check": datetime.now().isoformat()
+                }
+                _current_key_status = new_status
+                self._last_status = "TAMPERED"
+                logging.warning(f"SECURITY ALERT: Hardware key signature tampered on {key_drive['name']}")
+            else:
+                # First time - need to establish trust
+                new_status = {
+                    "status": "DETECTED",
+                    "message": "Hardware key found - establishing trust",
+                    "unlocked": False,
+                    "drive_info": {
+                        "name": key_drive["name"],
+                        "mount_path": key_drive["mount_path"],
+                        "size": key_drive.get("size", "Unknown")
+                    },
+                    "last_check": datetime.now().isoformat()
+                }
+                _current_key_status = new_status
             self._last_status = "DETECTED"
     
     @property
@@ -642,6 +702,8 @@ def verify_with_password(password: str) -> Dict[str, Any]:
     Convenience function to verify the hardware key with a password.
     Also starts monitoring if not already running.
     """
+    global _trusted_signature
+    
     verifier = HardwareKeyVerifier()
     key_drive = verifier.find_key_drive()
     
@@ -654,11 +716,95 @@ def verify_with_password(password: str) -> Dict[str, Any]:
     
     result = verifier.verify_key(key_drive["mount_path"], password)
     
-    # If valid, start monitoring with this password
+    # If valid, store the trusted signature and start monitoring
     if result.get("valid"):
+        # Read and store the trusted signature
+        key_path = os.path.join(key_drive["mount_path"], KEY_FILENAME)
+        try:
+            with open(key_path, 'r') as f:
+                key_data = json.load(f)
+                _trusted_signature = key_data.get("signature")
+                logging.info(f"Trusted signature stored: {_trusted_signature[:16]}...")
+        except Exception as e:
+            logging.error(f"Error storing trusted signature: {e}")
+        
         monitor = get_monitor()
         monitor.set_password(password)
         if not monitor.is_running:
             monitor.start_monitoring()
     
     return result
+
+
+def set_trusted_signature(signature: str):
+    """Set the trusted signature for tamper detection."""
+    global _trusted_signature
+    _trusted_signature = signature
+    logging.info(f"Trusted signature set: {signature[:16]}...")
+
+
+def get_trusted_signature() -> Optional[str]:
+    """Get the current trusted signature."""
+    global _trusted_signature
+    return _trusted_signature
+
+
+def verify_signature_only(mount_path: str) -> Dict[str, Any]:
+    """
+    Verify the hardware key by checking signature only (no password).
+    Compares current signature in file to trusted signature.
+    """
+    global _trusted_signature
+    
+    key_path = os.path.join(mount_path, KEY_FILENAME)
+    
+    if not os.path.exists(key_path):
+        return {
+            "status": "MISSING",
+            "message": "Key file not found on drive",
+            "valid": False
+        }
+    
+    try:
+        with open(key_path, 'r') as f:
+            key_data = json.load(f)
+        
+        current_signature = key_data.get("signature", "")
+        
+        # If no trusted signature stored yet, store this one
+        if _trusted_signature is None:
+            _trusted_signature = current_signature
+            logging.info(f"Initial trusted signature set: {current_signature[:16]}...")
+        
+        # Compare signatures
+        if current_signature == _trusted_signature:
+            return {
+                "status": "VALID",
+                "message": "Hardware key signature verified",
+                "valid": True,
+                "signature_valid": True,
+                "created_at": key_data.get("created_at")
+            }
+        else:
+            logging.warning(f"SECURITY ALERT: Signature mismatch! Expected: {_trusted_signature[:16]}..., Got: {current_signature[:16]}...")
+            return {
+                "status": "TAMPERED",
+                "message": "Hardware key signature has been tampered with!",
+                "valid": False,
+                "signature_valid": False
+            }
+            
+    except json.JSONDecodeError:
+        return {
+            "status": "CORRUPTED",
+            "message": "Key file is corrupted",
+            "valid": False
+        }
+    except Exception as e:
+        logging.error(f"Error verifying signature: {e}")
+        return {
+            "status": "ERROR",
+            "message": str(e),
+            "valid": False
+        }
+

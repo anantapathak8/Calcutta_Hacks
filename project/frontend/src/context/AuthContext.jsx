@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AuthContext = createContext(null);
 
-const POLL_INTERVAL = 3000; // Check USB status every 3 seconds
+const POLL_INTERVAL = 2000; // Check USB status every 2 seconds (signature validation)
 const GRACE_PERIOD = 5000; // 5 second grace period before logout
 
 export const AuthProvider = ({ children }) => {
@@ -37,10 +37,23 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    // Login function - called when USB is detected
+    // Login function - called when USB is detected with valid signature
     const login = useCallback(async () => {
         const status = await checkUsbStatus();
 
+        // Block login if signature is tampered
+        if (status?.status === 'TAMPERED') {
+            addAuditEntry('LOGIN_FAILED', { reason: 'Signature tampered - key file has been modified' });
+            return false;
+        }
+
+        // Block login if key is untrusted
+        if (status?.status === 'UNTRUSTED') {
+            addAuditEntry('LOGIN_FAILED', { reason: status?.message || 'Key verification failed' });
+            return false;
+        }
+
+        // Allow TRUSTED status (signature verified) or DETECTED (key present, trusting signature)
         if (status?.status === 'TRUSTED' || status?.status === 'DETECTED') {
             setIsAuthenticated(true);
             setGraceCountdown(null);
@@ -48,7 +61,8 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('sentinelAuthTime', new Date().toISOString());
             addAuditEntry('LOGIN_SUCCESS', {
                 drive: status?.drive_info?.name || 'Unknown',
-                method: 'USB_KEY'
+                method: 'USB_KEY',
+                signature_valid: status?.signature_valid !== false
             });
             return true;
         }
@@ -66,7 +80,7 @@ export const AuthProvider = ({ children }) => {
         addAuditEntry('LOGOUT', { reason });
     }, [addAuditEntry]);
 
-    // Check if USB is still connected (continuous monitoring)
+    // Check if USB is still connected (continuous monitoring with signature validation)
     useEffect(() => {
         let pollInterval;
         let graceTimeout;
@@ -76,13 +90,26 @@ export const AuthProvider = ({ children }) => {
 
             const status = await checkUsbStatus();
 
-            // Check if USB is still trusted
+            // IMMEDIATE logout if signature is tampered (no grace period for security breach)
+            if (status?.status === 'TAMPERED') {
+                addAuditEntry('SIGNATURE_TAMPERED', { 
+                    message: 'Hardware key signature invalid - possible tampering detected',
+                    immediate_logout: true 
+                });
+                logout('signature_tampered');
+                return;
+            }
+
+            // Check if USB is still connected with valid signature
             const isStillTrusted = status?.status === 'TRUSTED' || status?.status === 'DETECTED';
 
             if (!isStillTrusted && isAuthenticated) {
-                // USB removed - start grace period
+                // USB removed or verification failed - start grace period
                 if (graceCountdown === null) {
-                    addAuditEntry('USB_REMOVED', { message: 'Starting grace period' });
+                    const reason = status?.status === 'UNTRUSTED' 
+                        ? status?.message || 'Key verification failed'
+                        : 'USB removed';
+                    addAuditEntry('USB_REMOVED', { message: 'Starting grace period', reason });
                     setGraceCountdown(5);
 
                     // Start countdown

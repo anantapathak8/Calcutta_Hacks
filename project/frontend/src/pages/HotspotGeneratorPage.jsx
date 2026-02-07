@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Wifi, Play, X, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
+import { io } from 'socket.io-client';
 import '../styles/HotspotGeneratorPage.css';
 
 const HotspotGeneratorPage = () => {
@@ -10,6 +11,10 @@ const HotspotGeneratorPage = () => {
     const [executionResult, setExecutionResult] = useState(null);
     const [capabilities, setCapabilities] = useState(null);
     const [showPasswordMask, setShowPasswordMask] = useState(true);
+    const [executionStatus, setExecutionStatus] = useState(null);
+    const [socketConnected, setSocketConnected] = useState(false);
+    
+    const socketRef = useRef(null);
 
     const exampleCommands = [
         "Create a WPA2 network mynet32 in 2.4 ghz and password will be 27273259",
@@ -18,117 +23,172 @@ const HotspotGeneratorPage = () => {
     ];
 
     useEffect(() => {
+        // Initialize WebSocket connection
+        socketRef.current = io('http://localhost:5001/hotspot', {
+            transports: ['websocket', 'polling'],
+            reconnection: true,
+            reconnectionDelay: 1000,
+            reconnectionAttempts: 5
+        });
+
+        // Connection event handlers
+        socketRef.current.on('connect', () => {
+            console.log('WebSocket connected');
+            setSocketConnected(true);
+            setError(null);
+        });
+
+        socketRef.current.on('disconnect', () => {
+            console.log('WebSocket disconnected');
+            setSocketConnected(false);
+        });
+
+        socketRef.current.on('connected', (data) => {
+            console.log('Server confirmed connection:', data);
+        });
+
+        socketRef.current.on('connect_error', (err) => {
+            console.error('Connection error:', err);
+            setSocketConnected(false);
+            setError('Connection error. Make sure the backend is running.');
+        });
+
+        // Register event listeners for hotspot operations
+        socketRef.current.on('parse_result', handleParseResult);
+        socketRef.current.on('parse_status', handleParseStatus);
+        socketRef.current.on('execution_result', handleExecutionResult);
+        socketRef.current.on('execution_status', handleExecutionStatus);
+        socketRef.current.on('stop_result', handleStopResult);
+        socketRef.current.on('capabilities', handleCapabilitiesResult);
+        socketRef.current.on('error', handleSocketError);
+
         // Load system capabilities on mount
         fetchCapabilities();
+
+        // Cleanup on unmount
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+            }
+        };
     }, []);
 
-    const fetchCapabilities = async () => {
-        try {
-            const response = await fetch('http://localhost:5001/api/set7/capabilities');
-            const data = await response.json();
-            setCapabilities(data);
-        } catch (err) {
-            console.error('Error fetching capabilities:', err);
+    const handleParseStatus = (data) => {
+        console.log('Parse status:', data);
+        setExecutionStatus(data.message);
+    };
+
+    const handleParseResult = (data) => {
+        console.log('Parse result:', data);
+        setParsedData(data);
+        if (data.clarification) {
+            setError(data.clarification);
+        }
+        setIsLoading(false);
+        setExecutionStatus(null);
+    };
+
+    const handleExecutionStatus = (data) => {
+        console.log('Execution status:', data);
+        setExecutionStatus(data.message);
+        
+        if (data.requires_sudo) {
+            setError('Elevated permissions required. You may be prompted for your password.');
         }
     };
 
-    const handleParseCommand = async () => {
+    const handleExecutionResult = (data) => {
+        console.log('Execution result:', data);
+        setExecutionResult(data);
+        if (data.status === 'error') {
+            setError(data.message);
+        }
+        setIsLoading(false);
+        setExecutionStatus(null);
+    };
+
+    const handleStopResult = (data) => {
+        console.log('Stop result:', data);
+        setExecutionResult(data);
+        if (data.status === 'error') {
+            setError(data.message);
+        }
+        setIsLoading(false);
+        setExecutionStatus(null);
+    };
+
+    const handleCapabilitiesResult = (data) => {
+        console.log('Capabilities:', data);
+        setCapabilities(data);
+    };
+
+    const handleSocketError = (data) => {
+        console.error('Socket error:', data);
+        setError(data.error);
+        setIsLoading(false);
+        setExecutionStatus(null);
+    };
+
+    const fetchCapabilities = () => {
+        if (socketRef.current && socketRef.current.connected) {
+            socketRef.current.emit('get_capabilities');
+        }
+    };
+
+    const handleParseCommand = () => {
         if (!command.trim()) {
             setError('Please enter a command');
+            return;
+        }
+
+        if (!socketRef.current || !socketRef.current.connected) {
+            setError('Not connected to server. Please check your connection.');
             return;
         }
 
         setIsLoading(true);
         setError(null);
         setParsedData(null);
+        setExecutionStatus('Sending command to server...');
 
-        try {
-            const response = await fetch('http://localhost:5001/api/set7/parse', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ command }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setParsedData(data);
-                if (data.clarification) {
-                    setError(data.clarification);
-                }
-            } else {
-                setError(data.error || 'Failed to parse command');
-            }
-        } catch (err) {
-            setError('Connection error. Make sure the backend is running.');
-        } finally {
-            setIsLoading(false);
-        }
+        socketRef.current.emit('parse_command', { command });
     };
 
-    const handleExecute = async (dryRun = false) => {
+    const handleExecute = (dryRun = false) => {
         if (!parsedData || !parsedData.validation.valid) {
             setError('Cannot execute: parameters are invalid');
+            return;
+        }
+
+        if (!socketRef.current || !socketRef.current.connected) {
+            setError('Not connected to server. Please check your connection.');
             return;
         }
 
         setIsLoading(true);
         setExecutionResult(null);
         setError(null);
+        setExecutionStatus('Preparing to create hotspot...');
 
-        try {
-            const params = {
-                ...parsedData.validation.sanitized_params,
-                dry_run: dryRun
-            };
+        const params = {
+            ...parsedData.validation.sanitized_params,
+            dry_run: dryRun
+        };
 
-            const response = await fetch('http://localhost:5001/api/set7/execute', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(params),
-            });
-
-            const data = await response.json();
-
-            if (response.ok || response.status === 403) {
-                setExecutionResult(data);
-                if (data.status === 'error') {
-                    setError(data.message);
-                }
-            } else {
-                setError(data.message || 'Execution failed');
-            }
-        } catch (err) {
-            setError('Connection error. Make sure the backend is running.');
-        } finally {
-            setIsLoading(false);
-        }
+        socketRef.current.emit('execute_hotspot', params);
     };
 
-    const handleStopHotspot = async () => {
+    const handleStopHotspot = () => {
+        if (!socketRef.current || !socketRef.current.connected) {
+            setError('Not connected to server. Please check your connection.');
+            return;
+        }
+
         setIsLoading(true);
         setError(null);
+        setExecutionStatus('Stopping hotspot...');
 
-        try {
-            const response = await fetch('http://localhost:5001/api/set7/stop', {
-                method: 'POST',
-            });
-
-            const data = await response.json();
-            setExecutionResult(data);
-
-            if (data.status === 'error') {
-                setError(data.message);
-            }
-        } catch (err) {
-            setError('Connection error');
-        } finally {
-            setIsLoading(false);
-        }
+        socketRef.current.emit('stop_hotspot');
     };
 
     const handleClear = () => {
@@ -136,6 +196,7 @@ const HotspotGeneratorPage = () => {
         setParsedData(null);
         setError(null);
         setExecutionResult(null);
+        setExecutionStatus(null);
     };
 
     return (
@@ -148,7 +209,21 @@ const HotspotGeneratorPage = () => {
                     <h1 className="page-title">NLP Hotspot Generator</h1>
                     <p className="page-subtitle">Create Wi-Fi hotspots using natural language commands</p>
                 </div>
+                <div className="connection-status">
+                    <span className={`status-indicator ${socketConnected ? 'connected' : 'disconnected'}`}>
+                        <span className="status-dot"></span>
+                        {socketConnected ? 'Connected' : 'Disconnected'}
+                    </span>
+                </div>
             </div>
+
+            {/* Real-time Execution Status */}
+            {executionStatus && (
+                <div className="alert alert-info">
+                    <Terminal className="w-5 h-5 animate-pulse" />
+                    <span>{executionStatus}</span>
+                </div>
+            )}
 
             {/* System Capabilities Card */}
             {capabilities && (

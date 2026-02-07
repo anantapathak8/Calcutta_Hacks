@@ -26,12 +26,13 @@ const HardwareKeyStatus = () => {
 
     useEffect(() => {
         fetchStatus();
-        const interval = setInterval(fetchStatus, 5000); // Poll every 5 seconds
+        const interval = setInterval(fetchStatus, 2000); // Poll every 2 seconds for signature validation
         return () => clearInterval(interval);
     }, []);
 
     const isTrusted = status?.status === 'TRUSTED';
     const isDetected = status?.status === 'DETECTED';
+    const isTampered = status?.status === 'TAMPERED';
     const isUnknown = status?.status === 'UNKNOWN';
 
     if (loading) {
@@ -51,7 +52,7 @@ const HardwareKeyStatus = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className={`
-                group relative overflow-hidden rounded-2xl p-6
+                group relative overflow-hidden rounded-2xl p-4 xl:p-6
                 bg-gradient-to-br ${isTrusted
                     ? 'from-emerald-900/40 via-green-950/30 to-black/70 border-emerald-500/60'
                     : isDetected
@@ -108,10 +109,10 @@ const HardwareKeyStatus = () => {
                         )}
                     </div>
                     <div>
-                        <h3 className="text-sm font-bold text-gray-100 uppercase tracking-widest transition-colors group-hover:text-purple-300">
+                        <h3 className="text-xs xl:text-sm font-bold text-gray-100 uppercase tracking-wider xl:tracking-widest transition-colors group-hover:text-purple-300">
                             Hardware Key
                         </h3>
-                        <p className="text-xs text-gray-500 mt-0.5 transition-colors group-hover:text-purple-400/70 font-medium">
+                        <p className="text-[10px] xl:text-xs text-gray-500 mt-0.5 transition-colors group-hover:text-purple-400/70 font-medium">
                             USB Security
                         </p>
                     </div>
@@ -139,7 +140,7 @@ const HardwareKeyStatus = () => {
             {/* Status Display */}
             <div className="z-10 relative flex-1 flex flex-col justify-center">
                 <div className={`
-                    text-3xl font-black tracking-tight mb-2
+                    text-2xl xl:text-3xl font-black tracking-tight mb-2
                     transition-all duration-300
                     group-hover:scale-105
                     ${isTrusted
@@ -150,7 +151,7 @@ const HardwareKeyStatus = () => {
                 `}>
                     {status?.status || 'UNKNOWN'}
                 </div>
-                <p className="text-sm text-gray-300 transition-colors group-hover:text-purple-200 font-medium line-clamp-2">
+                <p className="text-xs xl:text-sm text-gray-300 transition-colors group-hover:text-purple-200 font-medium">
                     {status?.message || 'Checking status...'}
                 </p>
             </div>

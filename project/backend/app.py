@@ -4,10 +4,14 @@ load_dotenv()
 import os
 import json
 from flask_cors import CORS
+from flask_socketio import SocketIO
 from scheduler import start_scheduler
 
 app = Flask(__name__)
 CORS(app)
+
+# Initialize SocketIO with CORS support
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 OUTPUT_FILE = os.path.join(os.path.dirname(__file__), 'output/latest.json')
 
@@ -52,6 +56,10 @@ from set1.nat_proxy import nat_forwarding
 # Register set7 routes (NLP Hotspot Generator)
 from set7.api_routes import set7_bp
 app.register_blueprint(set7_bp)
+
+# Register WebSocket handlers for hotspot generator
+from set7.websocket_handlers import register_hotspot_handlers
+register_hotspot_handlers(socketio)
 
 
 # Chatbot NLP Parser
@@ -166,7 +174,11 @@ from set4.hardware_key import (
     HardwareKeyVerifier, 
     get_monitor, 
     get_current_status,
-    verify_with_password
+    verify_with_password,
+    verify_signature_only,
+    set_trusted_signature,
+    get_trusted_signature,
+    KEY_FILENAME
 )
 
 @app.route('/api/hardware-key/status', methods=['GET'])
@@ -176,24 +188,74 @@ def get_hardware_key_status():
         # First try cached status from monitor
         status = get_current_status()
         
-        # If status is UNKNOWN or UNTRUSTED, do a fresh check for key
-        if status.get("status") in ["UNKNOWN", "UNTRUSTED"]:
+        # If status is UNKNOWN, do a fresh check with signature verification
+        if status.get("status") == "UNKNOWN":
             verifier = HardwareKeyVerifier()
-            
-            # ONLY check for key drive - NOT any writable USB
             key_drive = verifier.find_key_drive()
+            
             if key_drive:
-                return jsonify({
-                    "status": "DETECTED",
-                    "message": "Hardware key found",
-                    "unlocked": False,
-                    "drive_info": key_drive,
-                    "last_check": __import__('datetime').datetime.now().isoformat()
-                })
+                # Verify signature
+                result = verify_signature_only(key_drive["mount_path"])
+                
+                if result.get("valid"):
+                    # Start monitor if not running
+                    monitor = get_monitor()
+                    if not monitor.is_running:
+                        monitor.start_monitoring()
+                    
+                    return jsonify({
+                        "status": "TRUSTED",
+                        "message": "Hardware key verified",
+                        "unlocked": True,
+                        "signature_valid": True,
+                        "drive_info": key_drive,
+                        "last_check": __import__('datetime').datetime.now().isoformat()
+                    })
+                elif result.get("status") == "TAMPERED":
+                    return jsonify({
+                        "status": "TAMPERED",
+                        "message": "Hardware key signature has been tampered!",
+                        "unlocked": False,
+                        "signature_valid": False,
+                        "drive_info": key_drive,
+                        "last_check": __import__('datetime').datetime.now().isoformat()
+                    })
+                else:
+                    return jsonify({
+                        "status": "DETECTED",
+                        "message": "Hardware key found",
+                        "unlocked": False,
+                        "drive_info": key_drive,
+                        "last_check": __import__('datetime').datetime.now().isoformat()
+                    })
         
         return jsonify(status)
     except Exception as e:
         return jsonify({"error": str(e), "status": "ERROR"}), 500
+
+@app.route('/api/hardware-key/set-trusted', methods=['POST'])
+def set_trusted_signature_endpoint():
+    """Set the trusted signature for the hardware key."""
+    try:
+        data = request.json
+        signature = data.get("signature")
+        
+        if not signature:
+            return jsonify({"success": False, "error": "signature is required"}), 400
+        
+        set_trusted_signature(signature)
+        
+        # Start monitoring
+        monitor = get_monitor()
+        if not monitor.is_running:
+            monitor.start_monitoring()
+        
+        return jsonify({
+            "success": True,
+            "message": "Trusted signature set successfully"
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/hardware-key/drives', methods=['GET'])
 def get_hardware_key_drives():
@@ -820,7 +882,8 @@ if __name__ == '__main__':
         # Start the scheduler in background
         start_scheduler()
         print(f"SentinelAI Backend Started on port {PORT}")
-        app.run(host='0.0.0.0', port=PORT, debug=True, use_reloader=False)
+        print(f"WebSocket endpoint available at ws://localhost:{PORT}/hotspot")
+        socketio.run(app, host='0.0.0.0', port=PORT, debug=True, use_reloader=False, allow_unsafe_werkzeug=True)
     except (KeyboardInterrupt, SystemExit):
         pass
     finally:

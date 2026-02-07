@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# VectorVault CLI - NAT Forwarding shortcut
+# Place this in your PATH (e.g. /usr/local/bin/vectorvault) or source it.
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+BACKEND_DIR="$SCRIPT_DIR/backend"
+
+exec python3 "$BACKEND_DIR/vectorvault_cli.py" "$@"

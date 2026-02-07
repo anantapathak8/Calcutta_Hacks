@@ -6,7 +6,9 @@ Manages nginx reverse proxy configuration for port forwarding.
 
 import subprocess
 import os
+import json
 import socket
+import fcntl
 from typing import List, Dict
 from datetime import datetime
 
@@ -19,8 +21,37 @@ class NginxConfigManager:
     def __init__(self):
         self.config_file = '/etc/nginx/sites-enabled/calcutta-hacks'
         self.server_name = 'calcutta-hacks-server.uemcseaiml.org'
-        self.port_forwards = []  # List of active port forwarding rules
+        self.rules_file = os.path.join(os.path.dirname(__file__), '..', '..', 'output', 'nat_rules.json')
+        self.port_forwards = self._load_rules()  # Load persisted rules on startup
     
+    def _load_rules(self) -> List[Dict]:
+        """Load rules from the shared JSON file."""
+        try:
+            if os.path.exists(self.rules_file):
+                with open(self.rules_file, 'r') as f:
+                    fcntl.flock(f, fcntl.LOCK_SH)
+                    data = json.load(f)
+                    fcntl.flock(f, fcntl.LOCK_UN)
+                return data if isinstance(data, list) else []
+        except (json.JSONDecodeError, IOError) as e:
+            print(f"[NGINX] Warning: Could not load rules file: {e}")
+        return []
+
+    def _save_rules(self):
+        """Persist current rules to the shared JSON file."""
+        try:
+            os.makedirs(os.path.dirname(self.rules_file), exist_ok=True)
+            with open(self.rules_file, 'w') as f:
+                fcntl.flock(f, fcntl.LOCK_EX)
+                json.dump(self.port_forwards, f, indent=2)
+                fcntl.flock(f, fcntl.LOCK_UN)
+        except IOError as e:
+            print(f"[NGINX] Warning: Could not save rules file: {e}")
+
+    def _sync_rules(self):
+        """Re-read rules from disk (picks up changes made by other processes)."""
+        self.port_forwards = self._load_rules()
+
     def get_local_ip(self) -> str:
         """Get local IP address assigned by router"""
         try:
@@ -171,14 +202,18 @@ class NginxConfigManager:
         Returns:
             Result dict
         """
+        # Sync from disk first so we see rules added by CLI / other processes
+        self._sync_rules()
+
         # Validate rule
         required_fields = ['internal_ip', 'internal_port', 'proxy_name']
         for field in required_fields:
             if field not in rule:
                 return {"error": f"Missing required field: {field}"}
         
-        # Add rule to list
-        rule['id'] = len(self.port_forwards) + 1
+        # Assign next ID based on existing max
+        max_id = max((r.get('id', 0) for r in self.port_forwards), default=0)
+        rule['id'] = max_id + 1
         rule['created_at'] = datetime.now().isoformat()
         self.port_forwards.append(rule)
         
@@ -200,6 +235,9 @@ class NginxConfigManager:
             self.port_forwards.remove(rule)
             return {"error": "Failed to reload nginx"}
         
+        # Persist to shared file
+        self._save_rules()
+
         return {
             "status": "success",
             "message": f"Rule added for /{rule['proxy_name']}/ -> port {rule['internal_port']}",
@@ -216,6 +254,9 @@ class NginxConfigManager:
         Returns:
             Result dict
         """
+        # Sync from disk first
+        self._sync_rules()
+
         # Find and remove rule
         rule_to_remove = None
         for rule in self.port_forwards:
@@ -244,6 +285,9 @@ class NginxConfigManager:
             self.port_forwards.append(rule_to_remove)
             return {"error": "Failed to reload nginx"}
         
+        # Persist to shared file
+        self._save_rules()
+
         return {
             "status": "success",
             "message": f"Rule removed: /{rule_to_remove['proxy_name']}/",
@@ -251,7 +295,8 @@ class NginxConfigManager:
         }
     
     def get_all_rules(self) -> List[Dict]:
-        """Get all active port forwarding rules"""
+        """Get all active port forwarding rules (re-reads from disk)"""
+        self._sync_rules()
         return self.port_forwards
     
     def clear_all_rules(self) -> Dict:
@@ -267,6 +312,9 @@ class NginxConfigManager:
         if not self.reload_nginx():
             return {"error": "Failed to reload nginx"}
         
+        # Persist to shared file
+        self._save_rules()
+
         return {
             "status": "success",
             "message": "All rules cleared"
