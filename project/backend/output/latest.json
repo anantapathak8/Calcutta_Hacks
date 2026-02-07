@@ -1,5 +1,5 @@
 {
-  "timestamp": 1770454781.209404,
+  "timestamp": 1770454823.2030694,
   "scans": {
     "ports": [
       {
@@ -82,9 +82,9 @@
       "details": "No duplicate MAC addresses found in ARP table."
     },
     "deauth_prediction": {
-      "status": "SAFE",
-      "details": "Wi-Fi connection appears stable.",
-      "probability": "Low"
+      "status": "WARNING",
+      "details": "Unstable connection detected. Monitor for deauth packets.",
+      "probability": "Medium"
     },
     "network_graph": {
       "nodes": [
@@ -171,7 +171,7 @@
       "mount_path": "/run/media/asif/SENTINEL",
       "size": "1.0GB (1.0GB free)"
     },
-    "last_check": "2026-02-07T14:29:39.209612"
+    "last_check": "2026-02-07T14:30:21.223071"
   },
   "risk_score": 15,
   "risk_level": "LOW",
@@ -179,254 +179,254 @@
   "action_plan": [],
   "logs": [
     {
-      "timestamp": "14:29:20",
-      "type": "SCAN",
-      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
-    },
-    {
-      "timestamp": "14:29:20",
-      "type": "SCAN",
-      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
-    },
-    {
-      "timestamp": "14:29:20",
-      "type": "INFO",
-      "message": "[AI] Correlating findings and calculating risk..."
-    },
-    {
-      "timestamp": "14:29:20",
-      "type": "INFO",
-      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
-    },
-    {
-      "timestamp": "14:29:21",
-      "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
-    },
-    {
-      "timestamp": "14:29:21",
-      "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98976, Requested 1264. Please try again in 3m27.36s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
-    },
-    {
-      "timestamp": "14:29:21",
-      "type": "SCAN",
-      "message": "[SYSTEM] Starting FAST scan cycle..."
-    },
-    {
-      "timestamp": "14:29:21",
-      "type": "SCAN",
-      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
-    },
-    {
-      "timestamp": "14:29:23",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 22 (ssh)"
-    },
-    {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "WARNING",
       "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "INFO",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "INFO",
       "message": "[SCAN] Found open port: 9000 (http)"
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "ERROR",
       "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "ERROR",
       "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
       "type": "INFO",
       "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
     },
     {
-      "timestamp": "14:29:23",
+      "timestamp": "14:29:59",
+      "type": "SCAN",
+      "message": "[SET2] Starting Device Discovery (Network Graph)..."
+    },
+    {
+      "timestamp": "14:29:59",
+      "type": "WARNING",
+      "message": "[SET2] Device Discovery failed/skipped ([Errno 1] Operation not permitted). Using Simulation Mode."
+    },
+    {
+      "timestamp": "14:29:59",
+      "type": "INFO",
+      "message": "[AI] Correlating findings and calculating risk..."
+    },
+    {
+      "timestamp": "14:29:59",
+      "type": "INFO",
+      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
+    },
+    {
+      "timestamp": "14:30:00",
       "type": "WARNING",
       "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
     },
     {
-      "timestamp": "14:29:24",
+      "timestamp": "14:30:00",
       "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98973, Requested 1264. Please try again in 3m24.768s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
     },
     {
-      "timestamp": "14:29:24",
+      "timestamp": "14:30:02",
+      "type": "WARNING",
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
+    },
+    {
+      "timestamp": "14:30:02",
+      "type": "WARNING",
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98929, Requested 1264. Please try again in 2m46.752s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    },
+    {
+      "timestamp": "14:30:03",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "14:29:24",
+      "timestamp": "14:30:03",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "14:29:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 22 (ssh)"
-    },
-    {
-      "timestamp": "14:29:38",
+      "timestamp": "14:30:05",
       "type": "WARNING",
-      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98925, Requested 1264. Please try again in 2m43.296s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
     },
     {
-      "timestamp": "14:29:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 5001 (http)"
-    },
-    {
-      "timestamp": "14:29:38",
-      "type": "INFO",
-      "message": "[SCAN] Found open port: 9000 (http)"
-    },
-    {
-      "timestamp": "14:29:38",
-      "type": "ERROR",
-      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
-    },
-    {
-      "timestamp": "14:29:38",
-      "type": "ERROR",
-      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
-    },
-    {
-      "timestamp": "14:29:38",
-      "type": "SCAN",
-      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
-    },
-    {
-      "timestamp": "14:29:38",
-      "type": "SCAN",
-      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
-    },
-    {
-      "timestamp": "14:29:38",
-      "type": "INFO",
-      "message": "[AI] Correlating findings and calculating risk..."
-    },
-    {
-      "timestamp": "14:29:38",
-      "type": "INFO",
-      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
-    },
-    {
-      "timestamp": "14:29:39",
+      "timestamp": "14:30:05",
       "type": "WARNING",
-      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98925, Requested 1264. Please try again in 2m43.296s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
     },
     {
-      "timestamp": "14:29:39",
-      "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98956, Requested 1269. Please try again in 3m14.399999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "timestamp": "14:30:05",
+      "type": "INFO",
+      "message": "[SYSTEM] FULL scan cycle completed."
     },
     {
-      "timestamp": "14:29:39",
+      "timestamp": "14:30:06",
       "type": "SCAN",
       "message": "[SYSTEM] Starting FAST scan cycle..."
     },
     {
-      "timestamp": "14:29:39",
+      "timestamp": "14:30:06",
       "type": "SCAN",
       "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
     },
     {
-      "timestamp": "14:29:39",
-      "type": "SCAN",
-      "message": "[SYSTEM] Starting FULL scan cycle (Background)..."
-    },
-    {
-      "timestamp": "14:29:39",
-      "type": "SCAN",
-      "message": "[SCAN] Scanning ports on 127.0.0.1 (FULL mode)..."
-    },
-    {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "INFO",
       "message": "[SCAN] Found open port: 22 (ssh)"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "WARNING",
       "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "INFO",
       "message": "[SCAN] Found open port: 5001 (http)"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "INFO",
       "message": "[SCAN] Found open port: 9000 (http)"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "ERROR",
       "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "ERROR",
       "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "SCAN",
       "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "SCAN",
       "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "INFO",
       "message": "[AI] Correlating findings and calculating risk..."
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:20",
       "type": "INFO",
       "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:21",
       "type": "WARNING",
       "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
     },
     {
-      "timestamp": "14:29:41",
+      "timestamp": "14:30:21",
       "type": "WARNING",
-      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98953, Requested 1264. Please try again in 3m7.488s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98907, Requested 1264. Please try again in 2m27.744s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    },
+    {
+      "timestamp": "14:30:21",
+      "type": "SCAN",
+      "message": "[SYSTEM] Starting FAST scan cycle..."
+    },
+    {
+      "timestamp": "14:30:21",
+      "type": "SCAN",
+      "message": "[SCAN] Scanning ports on 127.0.0.1 (FAST mode)..."
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 22 (ssh)"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "WARNING",
+      "message": "[SCAN] \ud83d\udfe1 MEDIUM RISK: Port 80 (http) - Unencrypted web traffic, vulnerable to MITM attacks"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 5001 (http)"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "INFO",
+      "message": "[SCAN] Found open port: 9000 (http)"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "ERROR",
+      "message": "[SCAN] \ud83d\udea8 SECURITY ALERT: Found 1 vulnerable port(s) - 0 CRITICAL, 0 HIGH RISK"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "ERROR",
+      "message": "[SCAN] \u26a0\ufe0f  RECOMMENDATION: Close unused ports or implement firewall rules immediately!"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "SCAN",
+      "message": "[SCAN] Checking for MITM indicators (ARP Spoofing)..."
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "SCAN",
+      "message": "[SCAN] Analyzing Wi-Fi stability for Deauth signatures..."
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "INFO",
+      "message": "[AI] Correlating findings and calculating risk..."
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "INFO",
+      "message": "[AI] Groq client initialized (Model: llama-3.3-70b-versatile)"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "WARNING",
+      "message": "[RAG] Search failed: Unexpected Response: 404 (Not Found)\nRaw response content:\nb'404 page not found\\n'"
+    },
+    {
+      "timestamp": "14:30:23",
+      "type": "WARNING",
+      "message": "[AI] Ollama Generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kdqx5s8rf0crzdrkm17t4bpt` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98904, Requested 1269. Please try again in 2m29.472s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
     }
   ],
   "mcp_results": []
